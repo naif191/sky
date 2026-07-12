@@ -28,7 +28,7 @@ body{
   color:var(--ink);
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif;
   overflow-x:hidden;
-  padding-bottom:calc(96px + env(safe-area-inset-bottom));
+  padding-bottom:calc(112px + env(safe-area-inset-bottom));
 }
 #sky{position:fixed;inset:0;z-index:0;pointer-events:none}
 .app{position:relative;z-index:1;max-width:520px;margin:0 auto;padding:0 18px}
@@ -41,25 +41,23 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;paddi
 .screen.active{display:block}
 @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 
-/* hero */
-.hero{text-align:center;padding:26px 10px 8px}
-.hero .label{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-dim)}
-.hero .num{
-  font-size:96px;font-weight:800;line-height:1;
-  background:linear-gradient(180deg,#FFF 20%,var(--star) 110%);
-  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-  margin:6px 0 2px;font-variant-numeric:tabular-nums;
-}
-.hero .sub{font-size:14px;color:var(--ink-dim)}
-.hero .sub b{color:var(--aurora);font-weight:600}
-.nextstone{margin:14px auto 0;max-width:340px}
-.nextstone .bar{height:6px;border-radius:3px;background:var(--line);overflow:hidden}
-.nextstone .fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--aurora),var(--star));transition:width .6s ease}
-.nextstone .txt{display:flex;justify-content:space-between;font-size:11px;color:var(--ink-dim);margin-top:6px}
+/* hero: streak ring */
+.hero{text-align:center;padding:18px 10px 2px}
+.ringwrap{position:relative;width:212px;height:212px;margin:0 auto}
+.ring{width:100%;height:100%;transform:rotate(-90deg)}
+.rbg{fill:none;stroke:rgba(232,236,255,.08);stroke-width:9}
+.rfg{fill:none;stroke:var(--star);stroke-width:9;stroke-linecap:round;stroke-dasharray:553;stroke-dashoffset:553;transition:stroke-dashoffset .8s ease;filter:drop-shadow(0 0 7px rgba(245,200,107,.5))}
+.ringcenter{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.hero .num{font-size:66px;font-weight:800;line-height:1;background:linear-gradient(180deg,#FFF 20%,var(--star) 110%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-variant-numeric:tabular-nums}
+.rlab{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-dim);margin-top:5px}
+.hero .sub{font-size:13px;color:var(--ink-dim);margin-top:12px;line-height:1.6}
+.hero .sub b{color:var(--aurora);font-weight:700}
+.hero .sub .nx{color:var(--star);font-weight:600}
 
 /* cards */
 .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin:14px 0}
-.card h3{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-dim);font-weight:600;margin-bottom:12px}
+.card h3{font-size:15px;color:var(--ink);font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.card h3 .soft{font-size:11px;color:var(--ink-dim);font-weight:400;margin-left:auto}
 .card h3 .em{color:var(--star)}
 
 /* check-in */
@@ -152,19 +150,20 @@ textarea.note::placeholder{color:var(--ink-dim)}
 .chartlegend .ring{width:9px;height:9px;border-radius:50%;border:2px solid var(--rose);background:transparent}
 
 /* nav */
-nav{position:fixed;left:0;right:0;bottom:0;z-index:20;background:rgba(11,16,38,.88);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-top:1px solid var(--line);padding:8px 8px calc(8px + env(safe-area-inset-bottom))}
-nav .inner{max-width:520px;margin:0 auto;display:grid;grid-template-columns:1fr 1.3fr 1fr;gap:8px;align-items:center}
-nav button{background:none;border:none;color:var(--ink-dim);font-family:inherit;font-size:11px;cursor:pointer;padding:6px 0;display:flex;flex-direction:column;align-items:center;gap:3px}
-nav button .ic{font-size:20px;line-height:1}
+nav{position:fixed;left:0;right:0;bottom:0;z-index:20;background:rgba(11,16,38,.92);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-top:1px solid var(--line);padding:6px 8px calc(6px + env(safe-area-inset-bottom))}
+nav .inner{max-width:520px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:4px;align-items:end}
+nav button{background:none;border:none;color:var(--ink-dim);font-family:inherit;font-size:10px;cursor:pointer;padding:4px 0 2px;display:flex;flex-direction:column;align-items:center;gap:3px}
+nav button .ic{font-size:21px;line-height:1}
 nav button.on{color:var(--star)}
-nav .sos{background:linear-gradient(135deg,#3E4FBF,#7A5CE0);color:#fff;border-radius:16px;padding:12px 0;font-size:15px;font-weight:800;letter-spacing:.06em;flex-direction:row;gap:8px;box-shadow:0 6px 22px rgba(90,80,220,.4)}
-nav .sos:active{transform:scale(.97)}
+nav .sosfab{width:58px;height:58px;border-radius:50%;margin:-26px auto 0;background:linear-gradient(135deg,#3E4FBF,#7A5CE0);color:#fff;font-size:14px;font-weight:800;letter-spacing:.05em;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(90,80,220,.55);border:2px solid rgba(150,160,255,.4);padding:0}
+nav .sosfab:active{transform:scale(.93)}
 
 /* overlays */
-.overlay{position:fixed;inset:0;z-index:50;background:rgba(8,11,28,.96);display:none;flex-direction:column;overflow-y:auto;padding:22px 20px calc(30px + env(safe-area-inset-bottom))}
+.overlay{position:fixed;inset:0;z-index:50;background:rgba(8,11,28,.96);display:none;flex-direction:column;overflow-y:auto;padding:22px 20px calc(80px + env(safe-area-inset-bottom))}
 .overlay.open{display:flex;animation:fade .2s ease}
 .overlay .inner{max-width:520px;margin:0 auto;width:100%}
-.overlay .close{position:sticky;top:0;margin-left:auto;display:block;background:var(--card);border:1px solid var(--line);color:var(--ink);width:38px;height:38px;border-radius:50%;font-size:16px;cursor:pointer;z-index:2}
+.overlay .close{position:fixed;top:calc(12px + env(safe-area-inset-top));right:14px;background:var(--card-2);border:1px solid var(--line);color:var(--ink);width:46px;height:46px;border-radius:50%;font-size:18px;cursor:pointer;z-index:60;box-shadow:0 4px 14px rgba(0,0,0,.4)}
+.ovtitle{padding-right:54px}
 .ovtitle{font-size:26px;font-weight:800;margin:10px 0 4px}
 .ovsub{font-size:14px;color:var(--ink-dim);line-height:1.5;margin-bottom:18px}
 
@@ -196,7 +195,7 @@ nav .sos:active{transform:scale(.97)}
 .bigbtn.gold{background:linear-gradient(135deg,var(--star),#FFDF9E)}
 .bigbtn.violet{background:linear-gradient(135deg,#7A5CE0,#9D8BF0);color:#fff}
 
-#toast{position:fixed;left:50%;bottom:calc(118px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);background:var(--card-2);border:1px solid rgba(245,200,107,.45);color:var(--ink);padding:12px 20px;border-radius:14px;font-size:14px;z-index:99;opacity:0;pointer-events:none;transition:all .3s ease;max-width:88vw;text-align:center;box-shadow:0 8px 30px rgba(0,0,0,.5)}
+#toast{position:fixed;left:50%;bottom:calc(104px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);background:var(--card-2);border:1px solid rgba(245,200,107,.45);color:var(--ink);padding:12px 20px;border-radius:14px;font-size:14px;z-index:99;opacity:0;pointer-events:none;transition:all .3s ease;max-width:88vw;text-align:center;box-shadow:0 8px 30px rgba(0,0,0,.5)}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
 .mini-note{font-size:12px;color:var(--ink-dim);line-height:1.5;margin-top:14px}
@@ -224,6 +223,14 @@ nav .sos:active{transform:scale(.97)}
 .cu-row .cu-clean{background:rgba(94,224,192,.15);color:var(--aurora);border:1px solid rgba(94,224,192,.35)}
 .cu-row .cu-slip{background:transparent;color:var(--ink-dim);border:1px solid var(--line)}
 .cu-all{width:100%;margin-top:12px;border:none;border-radius:12px;padding:12px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;color:var(--night);background:linear-gradient(135deg,var(--aurora),#8FF2DC)}
+
+.pb{border-bottom:1px solid var(--line)}
+.pb:last-of-type{border-bottom:none}
+.pb summary{padding:13px 0;font-size:14px;font-weight:600;cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px}
+.pb summary::-webkit-details-marker{display:none}
+.pb summary::after{content:'▾';margin-left:auto;color:var(--ink-dim);font-size:11px;transition:transform .2s ease}
+.pb[open] summary::after{transform:rotate(180deg)}
+.pb p{font-size:13px;color:var(--ink-dim);line-height:1.6;padding:0 2px 13px}
 
 /* PIN lock */
 .lock{position:fixed;inset:0;z-index:200;background:var(--night);display:none;flex-direction:column;align-items:center;justify-content:center;padding:24px}
@@ -257,35 +264,39 @@ nav .sos:active{transform:scale(.97)}
   <!-- ============ TODAY ============ -->
   <section class="screen active" id="scr-today">
     <div class="hero">
-      <div class="label">Current streak</div>
-      <div class="num" id="streakNum">0</div>
-      <div class="sub" id="streakSub"></div>
-      <div class="nextstone">
-        <div class="bar"><div class="fill" id="msFill" style="width:0%"></div></div>
-        <div class="txt"><span id="msFrom"></span><span id="msTo"></span></div>
+      <div class="ringwrap">
+        <svg viewBox="0 0 200 200" class="ring" aria-hidden="true">
+          <circle class="rbg" cx="100" cy="100" r="88"/>
+          <circle class="rfg" id="ringFg" cx="100" cy="100" r="88"/>
+        </svg>
+        <div class="ringcenter">
+          <div class="num" id="streakNum">0</div>
+          <div class="rlab" id="ringLab">days clean</div>
+        </div>
       </div>
+      <div class="sub" id="streakSub"></div>
     </div>
 
     <div class="card" id="checkinCard">
-      <h3>Today's check-in</h3>
+      <h3>✅ Today's check-in</h3>
       <div id="checkinBody"></div>
     </div>
 
     <div class="card" id="catchupCard" style="display:none">
-      <h3>Catch up — <span class="em">missed days</span></h3>
-      <div style="font-size:13px;color:var(--ink-dim);line-height:1.5;margin-bottom:6px">You didn't check in on these days. Mark them honestly so your streak stays accurate.</div>
+      <h3>⏪ Catch up on missed days</h3>
+      <div style="font-size:13px;color:var(--ink-dim);line-height:1.5;margin-bottom:6px">Mark each missed day honestly — the streak recalculates instantly.</div>
       <div id="catchupList"></div>
       <button class="cu-all" id="cuAllClean" style="display:none">All of them were clean ✨</button>
     </div>
 
     <div class="card">
-      <h3>Intimacy <span class="em">tracker</span></h3>
-      <div style="font-size:14px;line-height:1.55;color:var(--ink-dim)">Were you intimate today? Log it — good, rough, or somewhere between. This is how you'll watch the PIED fade over the weeks. <b style="color:var(--aurora)">Never touches your streak.</b></div>
+      <h3>💞 Intimacy</h3>
+      <div style="font-size:13px;line-height:1.5;color:var(--ink-dim)">One tap per moment with her — good or rough. <b style="color:var(--aurora)">Never touches your streak.</b></div>
       <button class="bigbtn violet" id="intimacyBtn">Log intimacy 💞</button>
     </div>
 
     <div class="card">
-      <h3>Real <span class="em">vs</span> pixels <span style="text-transform:none;letter-spacing:0;font-weight:400">(last 30 days)</span></h3>
+      <h3>⚖️ Real vs pixels <span class="soft">last 30 days</span></h3>
       <div class="rvp-scores">
         <div class="side"><div class="n real" id="rvpReal">0</div><div class="lab">💞 Real moments</div></div>
         <div class="vs">vs</div>
@@ -296,13 +307,13 @@ nav .sos:active{transform:scale(.97)}
     </div>
 
     <div class="card">
-      <h3>Tonight's note <span style="text-transform:none;letter-spacing:0;font-weight:400">(private)</span></h3>
+      <h3>📝 Tonight's note <span class="soft">private</span></h3>
       <textarea class="note" id="dayNote" placeholder="How was today? Any wins, urges, or things you noticed?"></textarea>
       <button class="savenote" id="saveNoteBtn">Save note</button>
     </div>
 
     <div class="card">
-      <h3>At a glance</h3>
+      <h3>📊 At a glance</h3>
       <div class="grid">
         <div class="stat"><div class="v gold" id="stBest">0</div><div class="k">Best streak</div></div>
         <div class="stat"><div class="v teal" id="stTotal">0</div><div class="k">Total clean days</div></div>
@@ -315,7 +326,7 @@ nav .sos:active{transform:scale(.97)}
   <!-- ============ JOURNEY ============ -->
   <section class="screen" id="scr-journey">
     <div class="card">
-      <h3>Recovery <span class="em">signs</span></h3>
+      <h3>📈 Recovery signs</h3>
       <div class="chartwrap">
         <div id="chartBox"></div>
         <div class="chartlegend">
@@ -347,16 +358,16 @@ nav .sos:active{transform:scale(.97)}
         <span><i style="border:1px solid var(--star)"></i>Today</span>
         <span>💞 Intimacy</span>
       </div>
-      <div class="mini-note">Tap any past day to set or fix its clean/slip status.</div>
+      <div class="mini-note">Tap a past day to set or fix it.</div>
     </div>
 
     <div class="card">
-      <h3>Constellation <span class="em">milestones</span></h3>
+      <h3>🌌 Milestones</h3>
       <div id="msList"></div>
     </div>
 
     <div class="card">
-      <h3>Urge & slip log</h3>
+      <h3>🌊 Urge & slip log</h3>
       <div id="urgeList"><div class="mini-note">No urges logged yet. When one hits, use the SOS button — riding it out counts as a win here.</div></div>
     </div>
   </section>
@@ -364,29 +375,29 @@ nav .sos:active{transform:scale(.97)}
   <!-- ============ WHY ============ -->
   <section class="screen" id="scr-why">
     <div class="card">
-      <h3>Why I'm doing this</h3>
+      <h3>⭐ Why I'm doing this</h3>
       <div id="reasonList"></div>
       <div class="addreason">
         <input id="reasonInput" placeholder="Add a reason…" maxlength="120">
         <button id="reasonAdd">Add</button>
       </div>
-      <div class="mini-note">These are shown back to you during an urge. Make them personal and specific — future-you will be reading them at a weak moment.</div>
+      <div class="mini-note">Shown back to you during an urge — make them personal and specific.</div>
     </div>
 
     <div class="card">
-      <h3>The playbook</h3>
-      <div style="font-size:14px;line-height:1.65;color:var(--ink)">
-        <p style="margin-bottom:10px"><b style="color:var(--star)">Urges are waves.</b> They build, peak, and pass — usually within 10–20 minutes. You don't have to fight the wave, just not act while it passes. Every wave you surf weakens the next one.</p>
-        <p style="margin-bottom:10px"><b style="color:var(--star)">Change the scene.</b> Urges live in specific places: bed + phone + alone + late is the classic trap. Stand up, leave the room, phone stays behind.</p>
-        <p style="margin-bottom:10px"><b style="color:var(--rose)">Edging is the trap within the trap.</b> A long edging session floods your brain with hours of elevated dopamine — it's far more reinforcing than a quick slip, and it's the pattern most tightly linked to PIED. If a slip starts, ending it in 5 minutes is genuinely much less damage than 5 hours. Log the duration honestly; the chart only works if it's true.</p>
-        <p style="margin-bottom:10px"><b style="color:var(--star)">A slip is data, not doom.</b> The streak resets; the progress doesn't. Your brain keeps every clean day you've banked. Log what triggered it, learn one thing, move on. The most dangerous part of a slip is the shame spiral after it — skip that part.</p>
-        <p style="margin-bottom:10px"><b style="color:var(--aurora)">Intimacy with your wife is the cure, not the test.</b> Rough nights with PIED will happen during the reboot — they're a symptom on its way out, not proof of failure. Log them, watch the strength line climb over the weeks, and take pressure off any single night.</p>
-        <p><b style="color:var(--star)">Rewiring is real but slow.</b> Most people report the hardest stretch is the first 2–4 weeks, and meaningful change over 60–90 days. That's why the constellation completes at day 90.</p>
+      <h3>📖 The playbook</h3>
+      <div>
+        <details class="pb"><summary>🌊 Urges are waves</summary><p>They build, peak, and pass — usually within 10–20 minutes. Don't fight the wave; just don't act while it passes. Every wave you surf weakens the next one.</p></details>
+        <details class="pb"><summary>🚪 Change the scene</summary><p>Bed + phone + alone + late is the classic trap. Stand up, leave the room, phone stays behind.</p></details>
+        <details class="pb"><summary>⚠️ Edging is the trap within the trap</summary><p>Hours of elevated dopamine make it far more reinforcing than a quick slip — and it's the pattern most linked to PIED. If a slip starts, 5 minutes is far less damage than 5 hours.</p></details>
+        <details class="pb"><summary>↺ A slip is data, not doom</summary><p>The streak resets; the progress doesn't. Log the trigger, learn one thing, skip the shame spiral — the spiral is the most dangerous part.</p></details>
+        <details class="pb"><summary>💞 Intimacy is the cure, not the test</summary><p>Rough nights with PIED during the reboot are a symptom on its way out, not proof of failure. Watch the trend line, not any single night.</p></details>
+        <details class="pb"><summary>🧠 Rewiring is slow but real</summary><p>The hardest stretch is the first 2–4 weeks; real change comes over 60–90 days. That's why the constellation completes at day 90.</p></details>
       </div>
     </div>
 
     <div class="card">
-      <h3>Danger zone</h3>
+      <h3>⚙️ Settings & data</h3>
       <button class="bigbtn ghost" id="pinChange" style="margin-top:0">Set / change passcode</button>
       <button class="bigbtn ghost" id="exportBtn">Back up my data (download file)</button>
       <button class="bigbtn ghost" id="importBtn">Restore from backup</button>
@@ -401,11 +412,9 @@ nav .sos:active{transform:scale(.97)}
 <nav>
   <div class="inner">
     <button data-scr="scr-today" class="on"><span class="ic">☀︎</span>Today</button>
-    <button class="sos" id="sosBtn"><span style="font-size:18px">🛟</span> URGE SOS</button>
     <button data-scr="scr-journey"><span class="ic">✦</span>Journey</button>
-  </div>
-  <div class="inner" style="grid-template-columns:1fr;margin-top:2px">
-    <button data-scr="scr-why" style="flex-direction:row;gap:6px"><span class="ic" style="font-size:14px">♥</span>My reasons & playbook</button>
+    <button class="sosfab" id="sosBtn">SOS</button>
+    <button data-scr="scr-why"><span class="ic">♥</span>Why</button>
   </div>
 </nav>
 
@@ -667,16 +676,17 @@ function avgStrengthLast5(){
 function renderHero(){
   const s = currentStreak();
   document.getElementById('streakNum').textContent = s;
+  document.getElementById('ringLab').textContent = s===1?'day clean':'days clean';
   const nm = nextMilestone();
   const beaten = urgesBeaten();
-  document.getElementById('streakSub').innerHTML =
-    s===0 ? 'day — the climb starts with today\'s check-in'
-          : (s===1?'day clean':'days clean') + ' · <b>'+beaten+'</b> urge'+(beaten===1?'':'s')+' beaten';
   const from = prevMilestoneDay();
-  const pct = Math.min(100, Math.round(100*(s-from)/Math.max(1,(nm.d-from))));
-  document.getElementById('msFill').style.width = (s>=nm.d?100:pct)+'%';
-  document.getElementById('msFrom').textContent = s+' / '+nm.d+' days';
-  document.getElementById('msTo').textContent = 'Next: '+nm.e+' '+nm.n;
+  const frac = s>=nm.d ? 1 : Math.max(0, Math.min(1,(s-from)/Math.max(1,(nm.d-from))));
+  document.getElementById('ringFg').style.strokeDashoffset = (553*(1-frac)).toFixed(1);
+  const togo = Math.max(0, nm.d - s);
+  document.getElementById('streakSub').innerHTML =
+    (s===0 ? 'The climb starts with today\'s check-in'
+           : '<b>'+beaten+'</b> urge'+(beaten===1?'':'s')+' beaten')
+    + '<br><span class="nx">'+nm.e+' '+nm.n+'</span> in '+togo+' day'+(togo===1?'':'s');
 }
 
 /* ---------- render: check-in ---------- */
@@ -689,7 +699,7 @@ function renderCheckin(){
       <button class="btn clean" id="ckClean">Clean day ✓</button>
       <button class="btn slip" id="ckSlip">I slipped</button>
     </div>
-    <div class="mini-note">Clean = no solo PMO today. Intimacy with your wife always counts as clean. If an urge hits — hit SOS below.</div>`;
+    <div class="mini-note">Clean = no solo PMO. Intimacy with your wife always counts as clean.</div>`;
     document.getElementById('ckClean').onclick = async ()=>{
       S.days[t]={status:'clean',note:S.noteDraft||''}; S.noteDraft='';
       await saveState(); renderAll();
