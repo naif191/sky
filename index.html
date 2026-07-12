@@ -22,13 +22,13 @@
   --radius:20px;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{height:100%}
+html,body{height:100%;overscroll-behavior-y:none}
 body{
   background:var(--night);
   color:var(--ink);
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif;
   overflow-x:hidden;
-  padding-bottom:calc(112px + env(safe-area-inset-bottom));
+  padding-bottom:calc(150px + env(safe-area-inset-bottom));
 }
 #sky{position:fixed;inset:0;z-index:0;pointer-events:none}
 .app{position:relative;z-index:1;max-width:520px;margin:0 auto;padding:0 18px}
@@ -155,7 +155,7 @@ nav .inner{max-width:520px;margin:0 auto;display:grid;grid-template-columns:1fr 
 nav button{background:none;border:none;color:var(--ink-dim);font-family:inherit;font-size:10px;cursor:pointer;padding:4px 0 2px;display:flex;flex-direction:column;align-items:center;gap:3px}
 nav button .ic{font-size:21px;line-height:1}
 nav button.on{color:var(--star)}
-nav .sosfab{width:58px;height:58px;border-radius:50%;margin:-26px auto 0;background:linear-gradient(135deg,#3E4FBF,#7A5CE0);color:#fff;font-size:14px;font-weight:800;letter-spacing:.05em;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(90,80,220,.55);border:2px solid rgba(150,160,255,.4);padding:0}
+nav .sosfab{width:56px;height:56px;border-radius:50%;margin:-20px auto 0;background:linear-gradient(135deg,#3E4FBF,#7A5CE0);color:#fff;font-size:14px;font-weight:800;letter-spacing:.05em;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(90,80,220,.55);border:2px solid rgba(150,160,255,.4);padding:0}
 nav .sosfab:active{transform:scale(.93)}
 
 /* overlays */
@@ -199,6 +199,7 @@ nav .sosfab:active{transform:scale(.93)}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
 .mini-note{font-size:12px;color:var(--ink-dim);line-height:1.5;margin-top:14px}
+.bottomspacer{height:70px}
 .sec-label{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-dim);font-weight:600;margin:20px 0 6px}
 
 /* real vs pixels */
@@ -321,6 +322,7 @@ nav .sosfab:active{transform:scale(.93)}
         <div class="stat"><div class="v violet" id="stStrength">–</div><div class="k">Avg strength (last 5)</div></div>
       </div>
     </div>
+    <div class="bottomspacer"></div>
   </section>
 
   <!-- ============ JOURNEY ============ -->
@@ -370,6 +372,7 @@ nav .sosfab:active{transform:scale(.93)}
       <h3>🌊 Urge & slip log</h3>
       <div id="urgeList"><div class="mini-note">No urges logged yet. When one hits, use the SOS button — riding it out counts as a win here.</div></div>
     </div>
+    <div class="bottomspacer"></div>
   </section>
 
   <!-- ============ WHY ============ -->
@@ -405,6 +408,7 @@ nav .sosfab:active{transform:scale(.93)}
       <button class="bigbtn ghost" id="resetAll">Erase all data</button>
       <div class="mini-note">Data lives on this device only. Download a backup now and then — restoring it brings everything back if you ever switch phones or clear Safari data.</div>
     </div>
+    <div class="bottomspacer"></div>
   </section>
 </div>
 
