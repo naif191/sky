@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0B1026">
+<meta name="apple-mobile-web-app-title" content="Northstar">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Northstar</title>
@@ -25,7 +27,8 @@
   --shadow-soft:0 8px 22px -14px rgba(0,0,0,.6);
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;overscroll-behavior-y:none}
+html,body{overscroll-behavior-y:none}
+html{-webkit-text-size-adjust:100%}
 body{
   background:var(--night);
   color:var(--ink);
@@ -132,10 +135,9 @@ textarea.note::placeholder{color:var(--ink-dim)}
 .climb{position:relative;margin:6px 2px 0}
 .climb-track{position:absolute;left:23px;top:0;bottom:0;width:2px;background:rgba(232,236,255,.1);border-radius:2px}
 .climb-fill{position:absolute;left:22px;bottom:0;width:4px;border-radius:3px;background:linear-gradient(0deg,var(--aurora),var(--star));box-shadow:0 0 12px rgba(245,200,107,.45);transition:height 1.2s cubic-bezier(.2,.7,.3,1)}
-.climb-you{position:absolute;left:24px;transform:translate(-50%,50%);display:flex;align-items:center;gap:9px;z-index:4;pointer-events:none}
-.climb-you .dot{width:16px;height:16px;border-radius:50%;background:var(--star);box-shadow:0 0 0 4px rgba(245,200,107,.22),0 0 16px rgba(245,200,107,.8);flex:none;animation:pulse 2.4s ease-in-out infinite}
+.climb-you{position:absolute;left:24px;transform:translate(-50%,50%);z-index:5;pointer-events:none}
+.climb-you .dot{width:16px;height:16px;border-radius:50%;background:var(--star);box-shadow:0 0 0 4px rgba(245,200,107,.22),0 0 16px rgba(245,200,107,.8);animation:pulse 2.4s ease-in-out infinite}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 4px rgba(245,200,107,.22),0 0 16px rgba(245,200,107,.7)}50%{box-shadow:0 0 0 7px rgba(245,200,107,.1),0 0 22px rgba(245,200,107,.95)}}
-.climb-you .tag{background:var(--star);color:#20160a;font-size:11px;font-weight:800;padding:3px 9px;border-radius:9px;white-space:nowrap;letter-spacing:.01em;box-shadow:0 4px 12px rgba(0,0,0,.4)}
 .climb-record{position:absolute;left:24px;right:0;transform:translateY(50%);border-top:1px dashed rgba(94,224,192,.4);z-index:2;pointer-events:none}
 .climb-record span{position:absolute;right:2px;top:-8px;font-size:10px;color:var(--aurora);background:var(--night);padding:0 6px;letter-spacing:.02em}
 
@@ -231,8 +233,8 @@ nav .sosfab:active{transform:scale(.92)}
 .ovsub{font-size:14px;color:var(--ink-dim);line-height:1.55;margin-bottom:18px}
 
 /* modal (check-in) */
-.overlay.modal{justify-content:center;padding:24px}
-.modalcard{background:linear-gradient(180deg,var(--card-2),var(--card));border:1px solid var(--line-hi);border-radius:26px;padding:24px 22px;max-width:440px;margin:0 auto;width:100%;box-shadow:0 24px 60px -20px rgba(0,0,0,.8);animation:pop .32s cubic-bezier(.2,.9,.3,1)}
+.overlay.modal{padding:24px}
+.modalcard{background:linear-gradient(180deg,var(--card-2),var(--card));border:1px solid var(--line-hi);border-radius:26px;padding:24px 22px;max-width:440px;margin:auto;width:100%;box-shadow:0 24px 60px -20px rgba(0,0,0,.8);animation:pop .32s cubic-bezier(.2,.9,.3,1)}
 @keyframes pop{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:none}}
 .modalcard .mt{font-size:23px;font-weight:800;letter-spacing:-.02em}
 .modalcard .msub{font-size:13.5px;color:var(--ink-dim);line-height:1.55;margin:7px 0 18px}
@@ -246,6 +248,18 @@ nav .sosfab:active{transform:scale(.92)}
 .ci-row .ci-slip{background:transparent;color:var(--ink-dim);border:1px solid var(--line-hi)}
 .ci-all{width:100%;margin-top:16px;border:none;border-radius:14px;padding:14px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;color:#08201b;background:linear-gradient(135deg,var(--aurora),#8FF2DC);box-shadow:0 8px 20px -8px rgba(94,224,192,.6)}
 .ci-later{width:100%;margin-top:9px;background:none;border:none;color:var(--ink-dim);font-size:13px;cursor:pointer;font-family:inherit;padding:8px;text-decoration:underline}
+.day-status{display:flex;gap:8px}
+.day-status button{flex:1;border:1px solid var(--line-hi);background:var(--night-2);color:var(--ink-dim);border-radius:13px;padding:13px 6px;font-size:13.5px;font-weight:700;cursor:pointer;font-family:inherit;transition:transform .08s ease}
+.day-status button:active{transform:scale(.96)}
+.day-status button.on[data-s="clean"]{background:rgba(94,224,192,.16);border-color:var(--aurora);color:var(--aurora)}
+.day-status button.on[data-s="slip"]{background:rgba(229,139,160,.14);border-color:var(--rose);color:var(--rose)}
+.day-status button.on[data-s="clear"]{background:var(--card-2);border-color:var(--line-hi);color:var(--ink)}
+.day-int-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+.day-int-row:last-child{border-bottom:none}
+.day-int-row .t{flex:1}
+.day-int-row .t small{display:block;color:var(--ink-dim);font-size:11px;margin-top:1px}
+.day-int-row .x{background:none;border:none;color:var(--ink-dim);cursor:pointer;font-size:15px;padding:2px 6px}
+.day-int-empty{font-size:12.5px;color:var(--ink-dim);line-height:1.5}
 
 /* breathing */
 .breathwrap{display:flex;flex-direction:column;align-items:center;padding:16px 0 8px}
@@ -317,6 +331,8 @@ nav .sosfab:active{transform:scale(.92)}
 .pad button.soft{background:transparent;border:none;font-size:14px;color:var(--ink-dim)}
 .lock .lskip{margin-top:26px;background:none;border:none;color:var(--ink-dim);font-size:13px;text-decoration:underline;cursor:pointer;font-family:inherit}
 
+.chip:focus-visible,.cal .day:focus-visible,.rate5 button:focus-visible,.statuschip.tap:focus-visible{outline:2px solid var(--star);outline-offset:2px}
+.lock .lskip + .lskip{margin-top:12px}
 @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -406,7 +422,7 @@ nav .sosfab:active{transform:scale(.92)}
         <span><i style="border:1px solid var(--star)"></i>Today</span>
         <span>💞 Intimacy</span>
       </div>
-      <div class="mini-note">Tap any past day to set or fix it.</div>
+      <div class="mini-note">Tap any past day to set its status or log intimacy for it.</div>
     </div>
 
     <div class="card">
@@ -540,6 +556,12 @@ nav .sosfab:active{transform:scale(.92)}
     <div class="ovtitle">Okay. Deep breath.</div>
     <div class="ovsub" id="slipSub"></div>
 
+    <div class="sec-label">When did it happen?</div>
+    <div class="chips" id="slipWhen">
+      <span class="chip sel" data-v="0">Today / just now</span>
+      <span class="chip" data-v="1">Last night — before I slept</span>
+    </div>
+
     <div class="sec-label">How long was the session?</div>
     <div class="chips" id="slipDur">
       <span class="chip" data-v="&lt;15 min">Under 15 min</span>
@@ -607,15 +629,39 @@ nav .sosfab:active{transform:scale(.92)}
     <div class="sec-label">Note (optional)</div>
     <textarea class="note" id="intNote" placeholder="Anything worth remembering — what helped, what didn't, how you felt after."></textarea>
 
-    <div class="field-hint">When?</div>
-    <div class="chips" id="intWhen">
-      <span class="chip sel" data-v="0">Today</span>
-      <span class="chip" data-v="1">Yesterday</span>
-      <span class="chip" data-v="2">2 days ago</span>
-      <span class="chip" data-v="3">3 days ago</span>
+    <div id="intWhenWrap">
+      <div class="field-hint">When?</div>
+      <div class="chips" id="intWhen">
+        <span class="chip sel" data-v="0">Today</span>
+        <span class="chip" data-v="1">Yesterday</span>
+        <span class="chip" data-v="2">2 days ago</span>
+        <span class="chip" data-v="3">3 days ago</span>
+      </div>
     </div>
+    <div id="intForDate" style="display:none;font-size:13px;color:var(--aurora);margin-top:6px"></div>
 
     <button class="bigbtn violet" id="intSave">Save to my recovery chart</button>
+  </div>
+</div>
+
+<!-- ============ DAY EDITOR (from calendar) ============ -->
+<div class="overlay modal" id="dayOverlay">
+  <div class="modalcard">
+    <div class="mt" id="dayTitle">Edit day</div>
+    <div class="msub">Set how the day went, and log any intimacy with your wife for it.</div>
+
+    <div class="sec-label" style="margin-top:0">This day was</div>
+    <div class="day-status" id="dayStatus">
+      <button data-s="clean">Clean ✓</button>
+      <button data-s="slip">Slipped</button>
+      <button data-s="clear">Not set</button>
+    </div>
+
+    <div class="sec-label">Intimacy 💞</div>
+    <div id="dayIntList"></div>
+    <button class="bigbtn violet" id="dayAddInt" style="margin-top:10px">Add intimacy for this day 💞</button>
+
+    <button class="ci-later" id="dayDone" style="margin-top:14px">Done</button>
   </div>
 </div>
 
@@ -626,12 +672,13 @@ nav .sosfab:active{transform:scale(.92)}
     <div style="font-size:78px" id="msEmoji">🌟</div>
     <div class="ovtitle" id="msName" style="font-size:33px;padding:0;text-align:center"></div>
     <div class="ovsub" id="msDesc" style="max-width:340px;margin:8px auto 20px"></div>
+    <div class="mini-note" id="msMore" style="display:none;max-width:320px;margin:-6px auto 18px;text-align:center"></div>
     <button class="bigbtn gold" data-close="msOverlay" style="max-width:280px;margin:0 auto">Keep climbing ⛰️</button>
   </div>
 </div>
 
 <!-- ============ PIN LOCK ============ -->
-<div class="lock" id="lockScreen">
+<div class="lock open" id="lockScreen">
   <div class="lbrand">North<b>star</b></div>
   <div class="lmsg" id="lockMsg">Enter passcode</div>
   <div class="dots" id="lockDots"><span class="pdot"></span><span class="pdot"></span><span class="pdot"></span><span class="pdot"></span></div>
@@ -642,13 +689,15 @@ nav .sosfab:active{transform:scale(.92)}
     <button class="soft" id="lockForgot">forgot</button><button>0</button><button class="soft" id="lockDel">⌫</button>
   </div>
   <button class="lskip" id="lockSkip" style="display:none">Skip — no passcode</button>
+  <button class="lskip" id="lockCancel" style="display:none">Cancel</button>
+  <button class="lskip" id="lockRemove" style="display:none">Remove passcode</button>
 </div>
 
 <div id="toast"></div>
 
 <script>
 /* =====================================================
-   Northstar v3 — private recovery tracker
+   Northstar v3.1 — private recovery tracker
    Streak rule: only solo PMO breaks the streak.
    Clean days are confirmed manually via the morning check-in.
    Data saves on-device via localStorage; back it up in Settings.
@@ -687,10 +736,12 @@ const SEED = {
   intimacy: [],
   reasons: DEFAULT_REASONS.slice(),
   celebrated: [],
-  pin: null,
+  pinHash: null,
   pinAsked: false,
   startDate: null,
-  checkinShownOn: null
+  checkinShownOn: null,
+  lastBackupAt: null,
+  backupNudgedOn: null
 };
 
 let S = null;
@@ -702,16 +753,9 @@ async function loadState(){
     const raw = localStorage.getItem(KEY);
     if(raw){
       S = JSON.parse(raw);
-      if(!S.intimacy) S.intimacy = [];
-      if(!S.urges) S.urges = [];
-      if(!S.reasons) S.reasons = DEFAULT_REASONS.slice();
-      if(!S.celebrated) S.celebrated = [];
-      if(S.pin===undefined) S.pin=null;
-      if(!S.startDate){
-        const logged = Object.keys(S.days||{}).sort();
-        S.startDate = logged.length ? logged[0] : todayStr();
-      }
-      if(S.checkinShownOn===undefined) S.checkinShownOn=null;
+      normalizeState();
+      if(S.pin){ S.pinHash = await hashPin(String(S.pin)); delete S.pin; await saveState(); }
+      else if('pin' in S){ delete S.pin; }
       return;
     }
   }catch(e){ /* corrupt or blocked — start fresh */ }
@@ -722,6 +766,42 @@ async function loadState(){
 async function saveState(){
   try{ localStorage.setItem(KEY, JSON.stringify(S)); }
   catch(e){ toast('⚠️ Could not save — storage may be blocked in private browsing'); }
+}
+const newId = () => 'm'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+/* fill in defaults + migrations for any loaded/imported state */
+function normalizeState(){
+  if(!S.days || typeof S.days!=='object') S.days = {};
+  if(!Array.isArray(S.urges)) S.urges = [];
+  if(!Array.isArray(S.intimacy)) S.intimacy = [];
+  if(!Array.isArray(S.reasons)) S.reasons = DEFAULT_REASONS.slice();
+  if(!Array.isArray(S.celebrated)) S.celebrated = [];
+  if(S.pinHash===undefined) S.pinHash = null;
+  if(!S.startDate){
+    const logged = Object.keys(S.days).sort();
+    S.startDate = logged.length ? logged[0] : todayStr();
+  }
+  if(S.checkinShownOn===undefined) S.checkinShownOn=null;
+  if(S.lastBackupAt===undefined) S.lastBackupAt=null;
+  if(S.backupNudgedOn===undefined) S.backupNudgedOn=null;
+  S.intimacy.forEach(x=>{ if(!x.id) x.id=newId(); });   /* unique ids so deleting one entry never deletes its twin */
+}
+
+/* ---------- PIN hashing (no plaintext on disk; still a casual-glance lock, not encryption) ---------- */
+function fnv(str){ let h=0x811c9dc5; for(let i=0;i<str.length;i++){ h^=str.charCodeAt(i); h=Math.imul(h,0x01000193); } return ('0000000'+(h>>>0).toString(16)).slice(-8); }
+async function hashPin(pin){
+  const salted='northstar:'+pin;
+  if(window.crypto && crypto.subtle){
+    try{
+      const buf=await crypto.subtle.digest('SHA-256', new TextEncoder().encode(salted));
+      return 'sha:'+Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+    }catch(e){}
+  }
+  return 'fnv:'+fnv(salted);
+}
+async function checkPin(pin){
+  if(!S.pinHash) return false;
+  if(S.pinHash.startsWith('fnv:')) return ('fnv:'+fnv('northstar:'+pin))===S.pinHash;
+  return (await hashPin(pin))===S.pinHash;
 }
 
 /* ---------- haptics (no-op where unsupported, e.g. iOS Safari) ---------- */
@@ -734,6 +814,7 @@ const localISO = d => fmt(d)+'T'+String(d.getHours()).padStart(2,'0')+':'+String
 function addDays(str,n){ const d=new Date(str+'T12:00:00'); d.setDate(d.getDate()+n); return fmt(d); }
 function niceDate(ds){ return new Date(ds+'T12:00:00').toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'}); }
 function niceShort(ds){ return new Date(ds+'T12:00:00').toLocaleDateString(undefined,{month:'short',day:'numeric'}); }
+function daysBetween(a,b){ return Math.round((new Date(b+'T12:00:00') - new Date(a+'T12:00:00'))/86400000); }
 function daysAgo(ds){
   const n = Math.round((new Date(todayStr()+'T12:00:00') - new Date(ds+'T12:00:00'))/86400000);
   return n<=0?'today':n===1?'yesterday':n+' days ago';
@@ -862,15 +943,67 @@ function afterCheckinMark(){
   }
 }
 function openCheckin(){
-  if(buildCheckin()) document.getElementById('checkinOverlay').classList.add('open');
+  if(buildCheckin()) ovOpen('checkinOverlay');
 }
-function closeCheckin(){ document.getElementById('checkinOverlay').classList.remove('open'); }
+function closeCheckin(){ ovClose('checkinOverlay'); }
 function maybeAutoCheckin(){
   if(pendingDays().length && S.checkinShownOn!==todayStr()){
     S.checkinShownOn = todayStr(); saveState();
     openCheckin();
   }
 }
+function maybeBackupNudge(){
+  const entries = totalClean() + S.urges.length + S.intimacy.length;
+  if(entries < 5) return;                                   /* nothing worth losing yet */
+  const last = S.lastBackupAt || S.startDate;
+  if(daysBetween(last, todayStr()) < 14) return;
+  if(S.backupNudgedOn && daysBetween(S.backupNudgedOn, todayStr()) < 14) return;
+  S.backupNudgedOn = todayStr(); saveState();
+  toast('📦 It\'s been a while since your last backup — Why → Settings');
+}
+
+/* ---------- overlay manager (back-gesture / back-button aware) ---------- */
+let ovStack=[], ovGuard=0;
+function ovOpen(id){
+  const el=document.getElementById(id);
+  if(el.classList.contains('open')) return;
+  el.classList.add('open');
+  ovStack.push(id);
+  try{ history.pushState({ov:true},''); }catch(e){}
+}
+/* swap one overlay for another without touching history (day editor ⇄ intimacy, SOS → slip) */
+function ovSwap(fromId,toId){
+  document.getElementById(fromId).classList.remove('open');
+  document.getElementById(toId).classList.add('open');
+  const i=ovStack.lastIndexOf(fromId);
+  if(i>=0) ovStack[i]=toId;
+  else { ovStack.push(toId); try{ history.pushState({ov:true},''); }catch(e){} }
+}
+function ovClose(id){
+  const el=document.getElementById(id);
+  if(!el.classList.contains('open')) return;
+  if(id==='sosOverlay') stopBreath();
+  if(id==='intOverlay' && intTargetDate && dayCursor){   /* cancelled a from-calendar entry → back to the day editor */
+    intTargetDate=null;
+    ovSwap('intOverlay','dayOverlay');
+    renderDayEditor();
+    return;
+  }
+  el.classList.remove('open');
+  const i=ovStack.lastIndexOf(id);
+  if(i>=0){ ovStack.splice(i,1); ovGuard++; try{ history.back(); }catch(e){} }
+}
+addEventListener('popstate',()=>{
+  if(ovGuard>0){ ovGuard--; return; }
+  const id=ovStack.pop();
+  if(!id) return;
+  document.getElementById(id).classList.remove('open');
+  if(id==='sosOverlay') stopBreath();
+  if(id==='intOverlay' && intTargetDate && dayCursor){
+    intTargetDate=null;
+    ovOpen('dayOverlay'); renderDayEditor();
+  }
+});
 
 /* ---------- render: hero ---------- */
 function renderHero(){
@@ -902,7 +1035,10 @@ function renderStatus(){
   if(pend){
     slot.innerHTML = `<div class="statuschip pending tap" id="statusChip">
       <span class="ci">⏪</span><span><b>${pend} day${pend===1?'':'s'} to check in.</b> Tap to catch up.</span><span class="arw">›</span></div>`;
-    document.getElementById('statusChip').onclick=openCheckin;
+    const chipEl=document.getElementById('statusChip');
+    chipEl.onclick=openCheckin;
+    chipEl.setAttribute('role','button'); chipEl.tabIndex=0;
+    chipEl.onkeydown=e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); openCheckin(); } };
   } else if(S.days[t] && S.days[t].status==='slip'){
     slot.innerHTML = `<div class="statuschip slip"><span class="ci">↺</span><span>Slip logged for today. Tomorrow is Day 1 of the next climb — your ${totalClean()} clean days still count.</span></div>`;
   } else if(S.days[t] && S.days[t].status==='clean'){
@@ -952,12 +1088,9 @@ function renderCal(){
     if(intDates.has(ds)){ const h=document.createElement('span'); h.className='heart'; h.textContent='💞'; e.appendChild(h); }
     if(ds>tStr){ e.classList.add('future'); }
     else {
-      e.onclick = async ()=>{
-        if(!S.days[ds]) S.days[ds]={status:'clean',note:''};
-        else if(S.days[ds].status==='clean') S.days[ds].status='slip';
-        else delete S.days[ds];
-        await saveState(); renderAll(); checkMilestone();
-      };
+      e.onclick = ()=> openDay(ds);
+      e.setAttribute('role','button'); e.tabIndex=0;
+      e.onkeydown = ev=>{ if(ev.key==='Enter'||ev.key===' '){ ev.preventDefault(); openDay(ds); } };
     }
     grid.appendChild(e);
   }
@@ -1092,7 +1225,7 @@ function renderMilestonesPage(){
   if(cur>0){
     const y=document.createElement('div'); y.className='climb-you';
     y.style.bottom=youC+'px';
-    y.innerHTML=`<span class="dot"></span><span class="tag">You · Day ${cur}</span>`;
+    y.innerHTML=`<span class="dot"></span>`;
     climb.appendChild(y);
   }
   const fill=climb.querySelector('.climb-fill');
@@ -1112,9 +1245,14 @@ function checkMilestone(){
   document.getElementById('msEmoji').textContent=hit.e;
   document.getElementById('msName').textContent=hit.n;
   document.getElementById('msDesc').textContent='Day '+hit.d+' — '+hit.desc;
+  const more=document.getElementById('msMore');
+  if(due.length>1){
+    more.style.display='block';
+    more.textContent='Also lit on the way up: '+due.slice(0,-1).map(m=>m.e+' '+m.n).join(' · ');
+  } else { more.style.display='none'; }
   spawnBurst();
   buzz([0,40,60,40,60,40]);
-  document.getElementById('msOverlay').classList.add('open');
+  ovOpen('msOverlay');
 }
 function spawnBurst(){
   const b=document.getElementById('msBurst'); if(!b) return;
@@ -1134,7 +1272,7 @@ function spawnBurst(){
 /* ---------- render: urge & slip log ---------- */
 function renderUrges(){
   const el=document.getElementById('urgeList');
-  if(!S.urges.length){ return; }
+  if(!S.urges.length){ el.innerHTML='<div class="mini-note">No urges logged yet. When one hits, use the SOS button — riding it out counts as a win here.</div>'; return; }
   el.innerHTML = S.urges.slice().reverse().slice(0,15).map(u=>{
     const d=new Date(u.ts);
     const when = d.toLocaleDateString(undefined,{month:'short',day:'numeric'})+' '+d.toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'});
@@ -1177,13 +1315,13 @@ function renderRecovery(){
       const when = d.toLocaleDateString(undefined,{month:'short',day:'numeric'});
       return `<div class="intitem">
         <div class="row1">💞 ${escapeHtml(x.type)} ${x.pied?'<span class="pied">PIED</span>':''}
-          <button class="x" data-ts="${x.ts}">✕</button></div>
+          <button class="x" data-id="${x.id}" aria-label="Delete entry">✕</button></div>
         <div class="row2"><span>Strength <b>${x.strength}/5</b></span><span>Confidence <b class="c">${x.confidence}/5</b></span><span>${when}</span></div>
         ${x.note?'<div class="nt">'+escapeHtml(x.note)+'</div>':''}
       </div>`;
     }).join('');
     list.querySelectorAll('.x').forEach(b=>b.onclick=async()=>{
-      S.intimacy = S.intimacy.filter(x=>x.ts!==b.dataset.ts);
+      S.intimacy = S.intimacy.filter(x=>x.id!==b.dataset.id);
       await saveState(); renderAll();
     });
   }
@@ -1232,7 +1370,7 @@ function openSOS(){
   urgeSel={intensity:null,trigger:null};
   document.querySelectorAll('#urgeIntensity button,#urgeTriggers .chip').forEach(x=>x.classList.remove('sel'));
   document.getElementById('waveMsg').innerHTML='';
-  document.getElementById('sosOverlay').classList.add('open');
+  ovOpen('sosOverlay');
 }
 function stopBreath(){
   breathOn=false; clearTimeout(breathTimer);
@@ -1269,28 +1407,68 @@ function startBreath(){
 }
 
 /* ---------- slip flow ---------- */
-let slipCtx=null, slipTrig=null, slipDurV=null, slipOV=null;
-function openSlip(fromUrge){
-  slipCtx = fromUrge||null; slipTrig=null; slipDurV=null; slipOV=null;
+let slipCtx=null, slipTrig=null, slipDurV=null, slipOV=null, slipWhenV='0';
+function prepSlip(fromUrge){
+  slipCtx = fromUrge||null; slipTrig=null; slipDurV=null; slipOV=null; slipWhenV='0';
   document.getElementById('slipLesson').value='';
   document.querySelectorAll('#slipTriggers .chip,#slipDur .chip,#slipO .chip').forEach(x=>x.classList.remove('sel','rosey'));
+  document.querySelectorAll('#slipWhen .chip').forEach(x=>x.classList.toggle('sel', x.dataset.v==='0'));
   document.getElementById('edgeWarn').classList.remove('show');
   const tc = totalClean();
   document.getElementById('slipSub').textContent =
     'A slip is a data point, not a verdict on you. Your streak resets — your progress doesn\'t. '+
     (tc>0? 'The '+tc+' clean day'+(tc===1?'':'s')+' you\'ve banked still count, and your brain knows it. ':'')+
     'Grab the details and the lesson, then move on. No shame spiral.';
-  document.getElementById('slipOverlay').classList.add('open');
 }
+function openSlip(fromUrge){ prepSlip(fromUrge); ovOpen('slipOverlay'); }
 
 /* ---------- intimacy flow ---------- */
 let intSel = {};
-function openIntimacy(){
+let intTargetDate = null;   /* when set, the entry is dated to this calendar day */
+function prepIntimacy(forDate){
   intSel = {type:null,strength:null,confidence:null,pied:null,when:'0'};
+  intTargetDate = forDate || null;
   document.getElementById('intNote').value='';
   document.querySelectorAll('#intType .chip,#intStrength button,#intConf button,#intPied .chip').forEach(x=>x.classList.remove('sel','rosey'));
   document.querySelectorAll('#intWhen .chip').forEach(x=>x.classList.toggle('sel', x.dataset.v==='0'));
-  document.getElementById('intOverlay').classList.add('open');
+  const wrap=document.getElementById('intWhenWrap');
+  const forEl=document.getElementById('intForDate');
+  if(intTargetDate){
+    wrap.style.display='none';
+    forEl.style.display='block';
+    forEl.textContent='Logging for '+niceDate(intTargetDate);
+  } else {
+    wrap.style.display='block';
+    forEl.style.display='none';
+  }
+}
+function openIntimacy(forDate){ prepIntimacy(forDate); ovOpen('intOverlay'); }
+
+/* ---------- day editor (from calendar) ---------- */
+let dayCursor = null;
+function openDay(ds){
+  dayCursor = ds;
+  renderDayEditor();
+  ovOpen('dayOverlay');
+}
+function renderDayEditor(){
+  const ds = dayCursor; if(!ds) return;
+  document.getElementById('dayTitle').textContent = niceDate(ds);
+  const status = S.days[ds] ? S.days[ds].status : 'clear';
+  document.querySelectorAll('#dayStatus button').forEach(b=>b.classList.toggle('on', b.dataset.s===status));
+  const list = document.getElementById('dayIntList');
+  const items = S.intimacy.filter(x=>x.ts.slice(0,10)===ds).sort((a,b)=> a.ts<b.ts?-1:1);
+  if(!items.length){
+    list.innerHTML = '<div class="day-int-empty">No intimacy logged for this day yet.</div>';
+  } else {
+    list.innerHTML = items.map(x=>`<div class="day-int-row">
+      <span class="t">💞 ${escapeHtml(x.type)}<small>Strength ${x.strength}/5 · Confidence ${x.confidence}/5${x.pied?' · PIED':''}</small></span>
+      <button class="x" data-id="${x.id}" aria-label="Delete entry">✕</button></div>`).join('');
+    list.querySelectorAll('.x').forEach(b=>b.onclick=async()=>{
+      S.intimacy = S.intimacy.filter(x=>x.id!==b.dataset.id);
+      await saveState(); renderAll(); renderDayEditor();
+    });
+  }
 }
 
 /* ---------- toast ---------- */
@@ -1317,7 +1495,7 @@ function buildStars(){
   }
 }
 function sizeSky(){ sky.width=innerWidth*devicePixelRatio; sky.height=innerHeight*devicePixelRatio; }
-addEventListener('resize',()=>{sizeSky();});
+addEventListener('resize',()=>{ sizeSky(); if(reduceMotion) drawSky(0); });
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 function drawSky(t){
   ctx.clearRect(0,0,sky.width,sky.height);
@@ -1342,6 +1520,12 @@ function drawSky(t){
 
 /* ---------- wire up ---------- */
 document.addEventListener('DOMContentLoaded',()=>{
+  /* keyboard access for chip controls */
+  document.querySelectorAll('.chip').forEach(c=>{
+    c.setAttribute('role','button'); c.tabIndex=0;
+    c.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); c.click(); } });
+  });
+
   /* nav */
   document.querySelectorAll('nav button[data-scr]').forEach(b=>b.onclick=()=>{
     document.querySelectorAll('nav button[data-scr]').forEach(x=>x.classList.remove('on'));
@@ -1351,10 +1535,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     window.scrollTo({top:0});
     if(b.dataset.scr==='scr-milestones') renderMilestonesPage();
   });
-  document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>{
-    document.getElementById(b.dataset.close).classList.remove('open');
-    stopBreath();
-  });
+  document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>ovClose(b.dataset.close));
 
   /* slip-today link */
   document.getElementById('slipTodayLink').onclick=()=>openSlip();
@@ -1386,15 +1567,15 @@ document.addEventListener('DOMContentLoaded',()=>{
   });
   document.getElementById('urgeWon').onclick=async()=>{
     S.urges.push({ts:localISO(new Date()), intensity:urgeSel.intensity||3, trigger:urgeSel.trigger||'', outcome:'resisted'});
-    buzz(15); await saveState(); stopBreath();
-    document.getElementById('sosOverlay').classList.remove('open');
+    buzz(15); await saveState();
+    ovClose('sosOverlay');
     renderAll();
     toast('🏆 Urge beaten. That\'s a rep for the new wiring.');
   };
   document.getElementById('urgeLost').onclick=()=>{
     stopBreath();
-    document.getElementById('sosOverlay').classList.remove('open');
-    openSlip(urgeSel);
+    prepSlip(urgeSel);
+    ovSwap('sosOverlay','slipOverlay');
   };
 
   /* slip */
@@ -1412,19 +1593,25 @@ document.addEventListener('DOMContentLoaded',()=>{
     document.querySelectorAll('#slipO .chip').forEach(x=>x.classList.remove('sel'));
     b.classList.add('sel'); slipOV=b.dataset.v;
   });
+  document.querySelectorAll('#slipWhen .chip').forEach(b=>b.onclick=()=>{
+    document.querySelectorAll('#slipWhen .chip').forEach(x=>x.classList.remove('sel'));
+    b.classList.add('sel'); slipWhenV=b.dataset.v;
+  });
   document.getElementById('slipConfirm').onclick=async()=>{
-    const t=todayStr();
+    const back = parseInt(slipWhenV,10)||0;
+    const ds = addDays(todayStr(), -back);          /* post-midnight slips can be filed under last night */
     const lesson=document.getElementById('slipLesson').value.trim();
-    S.days[t]={status:'slip', note:lesson? 'Lesson: '+lesson : (S.days[t]?.note||''), duration:slipDurV||'', orgasms:slipOV||''};
-    S.urges.push({ts:localISO(new Date()), intensity:(slipCtx?.intensity)||3, trigger:slipTrig||(slipCtx?.trigger)||'', outcome:'slipped', duration:slipDurV||'', orgasms:slipOV||'', note:lesson||''});
+    S.days[ds]={status:'slip', note:lesson? 'Lesson: '+lesson : (S.days[ds]?.note||''), duration:slipDurV||'', orgasms:slipOV||''};
+    const uts = back===0 ? localISO(new Date()) : ds+'T23:00:00';
+    S.urges.push({ts:uts, intensity:(slipCtx?.intensity)||3, trigger:slipTrig||(slipCtx?.trigger)||'', outcome:'slipped', duration:slipDurV||'', orgasms:slipOV||'', note:lesson||''});
     buzz(20); await saveState();
-    document.getElementById('slipOverlay').classList.remove('open');
+    ovClose('slipOverlay');
     renderAll();
-    toast('Logged. Tomorrow is Day 1 of the comeback. 🌅');
+    toast(back===0 ? 'Logged. Tomorrow is Day 1 of the comeback. 🌅' : 'Logged for last night. Today is Day 1 of the comeback. 🌅');
   };
 
   /* intimacy */
-  document.getElementById('intimacyBtn').onclick=openIntimacy;
+  document.getElementById('intimacyBtn').onclick=()=>openIntimacy();   /* wrap so the click event isn't passed as a date */
   document.querySelectorAll('#intType .chip').forEach(b=>b.onclick=()=>{
     document.querySelectorAll('#intType .chip').forEach(x=>x.classList.remove('sel'));
     b.classList.add('sel'); intSel.type=b.textContent;
@@ -1455,9 +1642,15 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('intSave').onclick=async()=>{
     if(!intSel.type){ toast('Pick what happened first 💞'); return; }
     if(!intSel.strength || !intSel.confidence){ toast('Rate strength and confidence (1–5)'); return; }
-    let ts = new Date();
-    ts.setDate(ts.getDate() - (parseInt(intSel.when)||0));
+    let ts;
+    if(intTargetDate){
+      ts = new Date(intTargetDate+'T20:00:00');   /* dated to the chosen calendar day */
+    } else {
+      ts = new Date();
+      ts.setDate(ts.getDate() - (parseInt(intSel.when)||0));
+    }
     S.intimacy.push({
+      id: newId(),
       ts: localISO(ts),
       type: intSel.type,
       strength: intSel.strength,
@@ -1465,13 +1658,34 @@ document.addEventListener('DOMContentLoaded',()=>{
       pied: !!intSel.pied,
       note: document.getElementById('intNote').value.trim()
     });
+    const wasForDate = intTargetDate; intTargetDate=null;
     buzz(12); await saveState();
-    document.getElementById('intOverlay').classList.remove('open');
+    if(wasForDate && dayCursor){ ovSwap('intOverlay','dayOverlay'); renderDayEditor(); }
+    else { ovClose('intOverlay'); }
     renderAll();
     toast(intSel.pied
       ? 'Logged. Rough nights are data too — the trend is what matters. 📈'
       : 'Logged 💞 Another point on the recovery curve.');
   };
+
+  /* day editor */
+  document.querySelectorAll('#dayStatus button').forEach(b=>b.onclick=async()=>{
+    const ds=dayCursor; if(!ds) return;
+    const s=b.dataset.s;
+    if(s==='clear') delete S.days[ds];
+    else {
+      const prevNote = S.days[ds]?.note || '';
+      S.days[ds] = {status:s, note:prevNote};
+    }
+    buzz(10); await saveState(); renderAll(); renderDayEditor();
+    if(s==='clean') checkMilestone();
+  });
+  document.getElementById('dayAddInt').onclick=()=>{
+    if(!dayCursor) return;
+    prepIntimacy(dayCursor);
+    ovSwap('dayOverlay','intOverlay');
+  };
+  document.getElementById('dayDone').onclick=()=>{ ovClose('dayOverlay'); dayCursor=null; };
 
   /* PIN pad */
   document.querySelectorAll('#lockPad button').forEach(b=>{
@@ -1479,7 +1693,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     b.onclick=()=>lockEntry(b.textContent);
   });
   document.getElementById('lockDel').onclick=()=>{ pinBuf=pinBuf.slice(0,-1); lockDotsDraw(); };
-  document.getElementById('lockSkip').onclick=async()=>{ S.pin=null; S.pinAsked=true; await saveState(); lockHide(); };
+  document.getElementById('lockSkip').onclick=async()=>{ S.pinHash=null; S.pinAsked=true; await saveState(); lockHide(); };
   document.getElementById('lockForgot').onclick=async()=>{
     if(!confirm('Forgot passcode? The only way back in is erasing ALL data. Erase everything?')) return;
     if(!confirm('Really erase every record? This cannot be undone.')) return;
@@ -1489,16 +1703,40 @@ document.addEventListener('DOMContentLoaded',()=>{
     toast('Fresh sky. Day 0 starts now.');
   };
   document.getElementById('pinChange').onclick=()=>{ lockShow('set'); };
+  document.getElementById('lockCancel').onclick=()=>{ document.getElementById('lockScreen').classList.remove('open'); };
+  document.getElementById('lockRemove').onclick=async()=>{
+    if(!confirm('Remove the passcode? The app will open without one.')) return;
+    S.pinHash=null; await saveState();
+    document.getElementById('lockScreen').classList.remove('open');
+    toast('Passcode removed');
+  };
 
   /* backup / restore */
-  document.getElementById('exportBtn').onclick=()=>{
-    const blob = new Blob([JSON.stringify(S,null,2)],{type:'application/json'});
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'northstar-backup-'+todayStr()+'.json';
-    document.body.appendChild(a); a.click(); a.remove();
-    setTimeout(()=>URL.revokeObjectURL(a.href), 5000);
-    toast('Backup downloaded — keep it somewhere safe 📦');
+  document.getElementById('exportBtn').onclick=async()=>{
+    const data = JSON.parse(JSON.stringify(S));
+    delete data.pinHash; delete data.pin;                 /* passcode never leaves the device */
+    const json = JSON.stringify(data,null,2);
+    const name = 'northstar-backup-'+todayStr()+'.json';
+    let done=false;
+    if(navigator.canShare){                               /* share sheet — reliable on iOS home-screen apps */
+      try{
+        const file = new File([json], name, {type:'application/json'});
+        if(navigator.canShare({files:[file]})){
+          await navigator.share({files:[file], title:'Northstar backup'});
+          done=true;
+        }
+      }catch(e){ if(e && e.name==='AbortError') return; }
+    }
+    if(!done){
+      const blob = new Blob([json],{type:'application/json'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = name;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(()=>URL.revokeObjectURL(a.href), 5000);
+    }
+    S.lastBackupAt=todayStr(); S.backupNudgedOn=null; await saveState();
+    toast('Backup saved — keep it somewhere safe 📦');
   };
   document.getElementById('importBtn').onclick=()=>document.getElementById('importFile').click();
   document.getElementById('importFile').onchange=(ev)=>{
@@ -1508,16 +1746,16 @@ document.addEventListener('DOMContentLoaded',()=>{
       try{
         const data=JSON.parse(rd.result);
         if(!data.days || !Array.isArray(data.urges)) throw 0;
-        if(!confirm('Replace everything in the app with this backup?')) return;
-        S=data;
-        if(!S.intimacy) S.intimacy=[];
-        if(!S.celebrated) S.celebrated=[];
-        if(S.pin===undefined) S.pin=null;
-        if(!S.startDate){ const lg=Object.keys(S.days||{}).sort(); S.startDate = lg.length?lg[0]:todayStr(); }
-        await saveState(); renderAllTracked();
-        toast('Backup restored ✨');
+        if(confirm('Replace everything in the app with this backup?')){
+          const keepHash = S.pinHash || null;             /* this device's passcode stays as-is */
+          S=data;
+          normalizeState();
+          S.pinHash=keepHash; delete S.pin;
+          await saveState(); renderAllTracked();
+          toast('Backup restored ✨');
+        }
       }catch(e){ toast('⚠️ That file isn\'t a valid Northstar backup'); }
-      ev.target.value='';
+      ev.target.value='';                                  /* always reset so the same file can be picked again */
     };
     rd.readAsText(f);
   };
@@ -1527,7 +1765,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     if(!confirm('Erase ALL data? This cannot be undone.')) return;
     try{ localStorage.removeItem(KEY); }catch(e){}
     S = JSON.parse(JSON.stringify(SEED)); S.startDate=todayStr();
-    await saveState(); renderAll();
+    await saveState(); renderAllTracked();
     toast('Fresh sky. Day 0 starts now.');
   };
 });
@@ -1551,12 +1789,14 @@ function lockShow(mode){
   lockMode=mode; pinBuf=''; pinFirst='';
   const msg=document.getElementById('lockMsg');
   document.getElementById('lockSkip').style.display = (mode==='set-initial')?'block':'none';
+  document.getElementById('lockCancel').style.display = (mode==='set')?'block':'none';
+  document.getElementById('lockRemove').style.display = (mode==='set' && S.pinHash)?'block':'none';
   document.getElementById('lockForgot').style.visibility = (mode==='unlock')?'visible':'hidden';
   msg.textContent = mode==='unlock' ? 'Enter passcode' : 'Choose a 4-digit passcode';
   lockDotsDraw();
   document.getElementById('lockScreen').classList.add('open');
 }
-function lockHide(){ document.getElementById('lockScreen').classList.remove('open'); appUnlocked=true; maybeAutoCheckin(); }
+function lockHide(){ document.getElementById('lockScreen').classList.remove('open'); appUnlocked=true; maybeAutoCheckin(); setTimeout(maybeBackupNudge, 1200); }
 function lockErr(msg){
   const d=document.getElementById('lockDots');
   d.classList.add('err');
@@ -1567,14 +1807,14 @@ async function lockEntry(digit){
   pinBuf+=digit; lockDotsDraw();
   if(pinBuf.length<4) return;
   if(lockMode==='unlock'){
-    if(pinBuf===S.pin){ lockHide(); }
+    if(await checkPin(pinBuf)){ lockHide(); }
     else lockErr('Wrong passcode — try again');
   } else if(!pinFirst){
     pinFirst=pinBuf; pinBuf=''; lockDotsDraw();
     document.getElementById('lockMsg').textContent='Enter it again to confirm';
   } else {
     if(pinBuf===pinFirst){
-      S.pin=pinBuf; await saveState();
+      S.pinHash=await hashPin(pinBuf); await saveState();
       lockHide(); toast('Passcode set 🔒');
     } else {
       pinFirst='';
@@ -1595,11 +1835,15 @@ setInterval(refreshIfNewDay, 60000);
 
 (async function(){
   await loadState();
+  try{ if(navigator.storage && navigator.storage.persist) navigator.storage.persist(); }catch(e){}   /* ask the browser not to evict data */
   sizeSky(); renderAllTracked();
   requestAnimationFrame(drawSky);
-  if(S.pin){ lockShow('unlock'); }
-  else if(!S.pinAsked){ S.pinAsked=true; await saveState(); lockShow('set-initial'); }
-  else { appUnlocked=true; maybeAutoCheckin(); }
+  if(S.pinHash){ lockShow('unlock'); }
+  else {
+    document.getElementById('lockScreen').classList.remove('open');
+    if(!S.pinAsked){ S.pinAsked=true; await saveState(); lockShow('set-initial'); }
+    else { appUnlocked=true; maybeAutoCheckin(); setTimeout(maybeBackupNudge, 1200); }
+  }
 })();
 </script>
 </body>
