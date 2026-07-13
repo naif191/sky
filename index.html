@@ -19,224 +19,291 @@
   --rose:#E58BA0;
   --violet:#9D8BF0;
   --line:rgba(232,236,255,0.08);
-  --radius:20px;
+  --line-hi:rgba(232,236,255,0.14);
+  --radius:22px;
+  --shadow:0 14px 34px -18px rgba(0,0,0,.75);
+  --shadow-soft:0 8px 22px -14px rgba(0,0,0,.6);
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overscroll-behavior-y:none}
 body{
   background:var(--night);
   color:var(--ink);
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif;
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Inter,Roboto,sans-serif;
   overflow-x:hidden;
   padding-bottom:calc(150px + env(safe-area-inset-bottom));
+  -webkit-font-smoothing:antialiased;
+  letter-spacing:-0.01em;
 }
 #sky{position:fixed;inset:0;z-index:0;pointer-events:none}
 .app{position:relative;z-index:1;max-width:520px;margin:0 auto;padding:0 18px}
-header.top{display:flex;align-items:baseline;justify-content:space-between;padding:22px 2px 6px}
-.brand{font-weight:700;letter-spacing:.12em;font-size:13px;text-transform:uppercase;color:var(--ink-dim)}
+header.top{display:flex;align-items:center;justify-content:space-between;padding:calc(20px + env(safe-area-inset-top)) 4px 4px}
+.brand{font-weight:700;letter-spacing:.16em;font-size:12px;text-transform:uppercase;color:var(--ink-dim)}
 .brand b{color:var(--star)}
-.datechip{font-size:12px;color:var(--ink-dim)}
+.datechip{font-size:12px;color:var(--ink-dim);font-variant-numeric:tabular-nums}
 
-.screen{display:none;animation:fade .25s ease}
+.screen{display:none;animation:rise .34s cubic-bezier(.2,.7,.3,1)}
 .screen.active{display:block}
-@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 
-/* hero: streak ring */
-.hero{text-align:center;padding:18px 10px 2px}
-.ringwrap{position:relative;width:212px;height:212px;margin:0 auto}
+/* ---------- hero: streak ring ---------- */
+.hero{text-align:center;padding:14px 10px 4px}
+.ringwrap{position:relative;width:224px;height:224px;margin:0 auto}
 .ring{width:100%;height:100%;transform:rotate(-90deg)}
-.rbg{fill:none;stroke:rgba(232,236,255,.08);stroke-width:9}
-.rfg{fill:none;stroke:var(--star);stroke-width:9;stroke-linecap:round;stroke-dasharray:553;stroke-dashoffset:553;transition:stroke-dashoffset .8s ease;filter:drop-shadow(0 0 7px rgba(245,200,107,.5))}
+.rbg{fill:none;stroke:rgba(232,236,255,.07);stroke-width:8}
+.rfg{fill:none;stroke:url(#ringGrad);stroke-width:9;stroke-linecap:round;stroke-dasharray:553;stroke-dashoffset:553;transition:stroke-dashoffset 1s cubic-bezier(.2,.7,.3,1);filter:drop-shadow(0 0 9px rgba(245,200,107,.55))}
+.ring .rpend{fill:none;stroke:rgba(94,224,192,.55);stroke-width:9;stroke-linecap:round;stroke-dasharray:2 10;opacity:0}
 .ringcenter{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.hero .num{font-size:66px;font-weight:800;line-height:1;background:linear-gradient(180deg,#FFF 20%,var(--star) 110%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-variant-numeric:tabular-nums}
-.rlab{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-dim);margin-top:5px}
-.hero .sub{font-size:13px;color:var(--ink-dim);margin-top:12px;line-height:1.6}
+.hero .num{font-size:74px;font-weight:800;line-height:.98;letter-spacing:-.03em;background:linear-gradient(175deg,#FFFFFF 18%,var(--star) 118%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-variant-numeric:tabular-nums}
+.rlab{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim);margin-top:6px}
+.hero .sub{font-size:13.5px;color:var(--ink-dim);margin-top:14px;line-height:1.65}
 .hero .sub b{color:var(--aurora);font-weight:700}
 .hero .sub .nx{color:var(--star);font-weight:600}
 
-/* cards */
-.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin:14px 0}
-.card h3{font-size:15px;color:var(--ink);font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
-.card h3 .soft{font-size:11px;color:var(--ink-dim);font-weight:400;margin-left:auto}
+/* status chip under hero */
+.statuschip{display:inline-flex;align-items:center;gap:9px;margin-top:14px;background:linear-gradient(180deg,var(--card-2),var(--card));border:1px solid var(--line-hi);border-radius:16px;padding:12px 16px;font-size:13.5px;line-height:1.4;text-align:left;cursor:default;max-width:100%;box-shadow:var(--shadow-soft)}
+.statuschip.tap{cursor:pointer;transition:transform .08s ease}
+.statuschip.tap:active{transform:scale(.98)}
+.statuschip .ci{width:34px;height:34px;border-radius:11px;flex:none;display:flex;align-items:center;justify-content:center;font-size:17px}
+.statuschip.pending .ci{background:rgba(245,200,107,.14);color:var(--star)}
+.statuschip.idle .ci{background:rgba(94,224,192,.12);color:var(--aurora)}
+.statuschip.slip .ci{background:rgba(229,139,160,.12);color:var(--rose)}
+.statuschip b{color:var(--ink)}
+.statuschip .arw{color:var(--ink-dim);font-size:16px;margin-left:2px}
+.slip-link{display:block;margin:18px auto 2px;background:none;border:none;color:var(--ink-dim);font-size:13px;font-family:inherit;cursor:pointer;padding:8px;text-decoration:none;border-bottom:1px dashed rgba(232,236,255,.16)}
+.slip-link:active{color:var(--rose);border-color:var(--rose)}
+
+/* ---------- cards ---------- */
+.card{background:linear-gradient(180deg,rgba(28,39,85,.72),rgba(22,31,69,.72));border:1px solid var(--line);border-radius:var(--radius);padding:18px 18px 20px;margin:15px 0;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(232,236,255,.16),transparent)}
+.card h3{font-size:15px;color:var(--ink);font-weight:700;margin-bottom:13px;display:flex;align-items:center;gap:9px;letter-spacing:-.01em}
+.card h3 .soft{font-size:11px;color:var(--ink-dim);font-weight:400;margin-left:auto;letter-spacing:0}
 .card h3 .em{color:var(--star)}
 
-/* check-in */
-.checkrow{display:flex;gap:10px}
-.btn{flex:1;border:none;border-radius:16px;padding:16px 10px;font-size:15px;font-weight:700;color:var(--night);cursor:pointer;transition:transform .08s ease;font-family:inherit}
-.btn:active{transform:scale(.97)}
-.btn.clean{background:linear-gradient(135deg,var(--aurora),#8FF2DC)}
-.btn.slip{background:transparent;color:var(--ink-dim);border:1px solid var(--line);font-weight:600}
-.btn.slip:active{color:var(--rose);border-color:var(--rose)}
-.checked-msg{display:flex;align-items:center;gap:12px;padding:6px 2px;font-size:15px;line-height:1.45}
-.checked-msg .dot{width:38px;height:38px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-size:18px}
-.checked-msg.ok .dot{background:rgba(94,224,192,.15);color:var(--aurora)}
-.checked-msg.bad .dot{background:rgba(229,139,160,.12);color:var(--rose)}
-.undo{background:none;border:none;color:var(--ink-dim);font-size:12px;text-decoration:underline;cursor:pointer;margin-top:8px;font-family:inherit}
-
-textarea.note{width:100%;background:var(--night-2);border:1px solid var(--line);border-radius:12px;color:var(--ink);font-family:inherit;font-size:14px;padding:12px;resize:none;min-height:64px;margin-top:10px}
+textarea.note{width:100%;background:var(--night-2);border:1px solid var(--line);border-radius:13px;color:var(--ink);font-family:inherit;font-size:14px;padding:12px;resize:none;min-height:64px;margin-top:10px}
 textarea.note::placeholder{color:var(--ink-dim)}
-.savenote{margin-top:8px;background:var(--card-2);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:8px 14px;font-size:13px;cursor:pointer;font-family:inherit}
-.savenote.saved{color:var(--aurora);border-color:rgba(94,224,192,.4)}
 
-/* stats */
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.stat{background:var(--night-2);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
-.stat .v{font-size:26px;font-weight:800;font-variant-numeric:tabular-nums}
-.stat .k{font-size:11px;color:var(--ink-dim);margin-top:3px;letter-spacing:.04em}
+/* ---------- stats grid ---------- */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.stat{background:rgba(11,16,38,.55);border:1px solid var(--line);border-radius:15px;padding:15px 12px;text-align:center}
+.stat .v{font-size:27px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.stat .k{font-size:11px;color:var(--ink-dim);margin-top:4px;letter-spacing:.02em}
 .stat .v.gold{color:var(--star)}
 .stat .v.teal{color:var(--aurora)}
 .stat .v.violet{color:var(--violet)}
 .stat .v.rose{color:var(--rose)}
 
-/* calendar */
-.calhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-.calhead button{background:var(--night-2);border:1px solid var(--line);color:var(--ink);width:34px;height:34px;border-radius:10px;font-size:16px;cursor:pointer}
+/* ---------- calendar ---------- */
+.calhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.calhead button{background:var(--night-2);border:1px solid var(--line);color:var(--ink);width:36px;height:36px;border-radius:11px;font-size:16px;cursor:pointer}
 .calhead .m{font-weight:700;font-size:15px}
 .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
 .cal .dow{text-align:center;font-size:10px;color:var(--ink-dim);padding:4px 0;letter-spacing:.06em}
-.cal .day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:10px;font-size:13px;font-variant-numeric:tabular-nums;color:var(--ink-dim);background:var(--night-2);border:1px solid transparent;cursor:pointer;position:relative}
+.cal .day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:11px;font-size:13px;font-variant-numeric:tabular-nums;color:var(--ink-dim);background:rgba(11,16,38,.5);border:1px solid transparent;cursor:pointer;position:relative}
 .cal .day.blank{background:transparent;cursor:default}
 .cal .day.clean{background:rgba(94,224,192,.16);color:var(--aurora);font-weight:700}
 .cal .day.slip{background:rgba(229,139,160,.13);color:var(--rose);font-weight:700}
-.cal .day.today{border-color:var(--star)}
-.cal .day.future{opacity:.32;cursor:default}
+.cal .day.today{border-color:var(--star);box-shadow:0 0 0 1px rgba(245,200,107,.35)}
+.cal .day.future{opacity:.3;cursor:default}
 .cal .day .heart{position:absolute;top:1px;right:3px;font-size:8px}
-.callegend{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px;font-size:11px;color:var(--ink-dim)}
+.callegend{display:flex;flex-wrap:wrap;gap:12px;margin-top:13px;font-size:11px;color:var(--ink-dim)}
 .callegend span{display:flex;align-items:center;gap:6px}
 .callegend i{width:10px;height:10px;border-radius:3px;display:inline-block}
 
-/* milestones */
-.mstone{display:flex;align-items:center;gap:14px;padding:12px 2px;border-bottom:1px solid var(--line)}
-.mstone:last-child{border-bottom:none}
-.mstone .badge{width:44px;height:44px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-size:20px;background:var(--night-2);border:1px solid var(--line);filter:grayscale(1);opacity:.45}
-.mstone.won .badge{filter:none;opacity:1;background:rgba(245,200,107,.12);border-color:rgba(245,200,107,.5);box-shadow:0 0 14px rgba(245,200,107,.25)}
-.mstone .t{font-weight:700;font-size:15px}
-.mstone .d{font-size:12px;color:var(--ink-dim);margin-top:2px}
-.mstone .days{margin-left:auto;font-size:12px;color:var(--ink-dim);font-variant-numeric:tabular-nums;flex:none}
-.mstone.won .days{color:var(--star);font-weight:700}
+/* ---------- MILESTONES: the climb ---------- */
+.ms-summary{display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px;margin-bottom:2px}
+.ms-summary .stat .v{font-size:24px}
 
-/* reasons */
-.reason{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line);font-size:15px;line-height:1.4}
+.nextstar{background:linear-gradient(180deg,rgba(245,200,107,.13),rgba(28,39,85,.55));border:1px solid rgba(245,200,107,.32);border-radius:var(--radius);padding:17px 18px;margin:15px 0;box-shadow:var(--shadow)}
+.nextstar .top{display:flex;align-items:center;gap:13px}
+.nextstar .em{font-size:32px;filter:drop-shadow(0 0 10px rgba(245,200,107,.4))}
+.nextstar .lab{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--star);font-weight:700}
+.nextstar .nm{font-size:19px;font-weight:800;margin-top:1px;letter-spacing:-.01em}
+.nextstar .togo{margin-left:auto;text-align:right;flex:none}
+.nextstar .togo .n{font-size:26px;font-weight:800;color:var(--star);font-variant-numeric:tabular-nums;line-height:1}
+.nextstar .togo .u{font-size:10px;color:var(--ink-dim);letter-spacing:.08em;text-transform:uppercase}
+.nextstar .segbar{height:9px;border-radius:5px;background:rgba(11,16,38,.6);overflow:hidden;margin-top:14px}
+.nextstar .segbar i{display:block;height:100%;border-radius:5px;background:linear-gradient(90deg,var(--star),#FFE0A0);box-shadow:0 0 10px rgba(245,200,107,.5);transition:width 1s cubic-bezier(.2,.7,.3,1)}
+.nextstar .msg{font-size:13px;color:var(--ink-dim);line-height:1.55;margin-top:11px}
+.nextstar .msg b{color:var(--star)}
+.record-flag{display:flex;align-items:center;gap:8px;margin-top:11px;font-size:13px;color:var(--aurora);background:rgba(94,224,192,.08);border:1px solid rgba(94,224,192,.28);border-radius:12px;padding:10px 12px;line-height:1.45}
+.record-flag b{color:var(--aurora)}
+
+.climb{position:relative;margin:6px 2px 0}
+.climb-track{position:absolute;left:23px;top:0;bottom:0;width:2px;background:rgba(232,236,255,.1);border-radius:2px}
+.climb-fill{position:absolute;left:22px;bottom:0;width:4px;border-radius:3px;background:linear-gradient(0deg,var(--aurora),var(--star));box-shadow:0 0 12px rgba(245,200,107,.45);transition:height 1.2s cubic-bezier(.2,.7,.3,1)}
+.climb-you{position:absolute;left:24px;transform:translate(-50%,50%);display:flex;align-items:center;gap:9px;z-index:4;pointer-events:none}
+.climb-you .dot{width:16px;height:16px;border-radius:50%;background:var(--star);box-shadow:0 0 0 4px rgba(245,200,107,.22),0 0 16px rgba(245,200,107,.8);flex:none;animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 4px rgba(245,200,107,.22),0 0 16px rgba(245,200,107,.7)}50%{box-shadow:0 0 0 7px rgba(245,200,107,.1),0 0 22px rgba(245,200,107,.95)}}
+.climb-you .tag{background:var(--star);color:#20160a;font-size:11px;font-weight:800;padding:3px 9px;border-radius:9px;white-space:nowrap;letter-spacing:.01em;box-shadow:0 4px 12px rgba(0,0,0,.4)}
+.climb-record{position:absolute;left:24px;right:0;transform:translateY(50%);border-top:1px dashed rgba(94,224,192,.4);z-index:2;pointer-events:none}
+.climb-record span{position:absolute;right:2px;top:-8px;font-size:10px;color:var(--aurora);background:var(--night);padding:0 6px;letter-spacing:.02em}
+
+.climb-node{position:relative;display:flex;align-items:flex-start;padding:16px 0 16px 56px;min-height:56px}
+.node-star{position:absolute;left:12px;top:22px;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;background:var(--night-2);border:1px solid var(--line);z-index:3}
+.node-star.base{background:rgba(11,16,38,.9);border-color:var(--line-hi);color:var(--ink-dim)}
+.node-star.next{border-color:var(--star);box-shadow:0 0 0 3px rgba(245,200,107,.14);animation:pulse2 2.6s ease-in-out infinite}
+@keyframes pulse2{0%,100%{box-shadow:0 0 0 3px rgba(245,200,107,.12)}50%{box-shadow:0 0 0 5px rgba(245,200,107,.05)}}
+.node-star.won{filter:none;opacity:1;background:rgba(245,200,107,.16);border-color:rgba(245,200,107,.6);box-shadow:0 0 16px rgba(245,200,107,.4)}
+.node-star.inview{opacity:1;border-color:var(--line-hi)}
+.node-star.emerging{filter:grayscale(.5);opacity:.5}
+.node-star.veiled{opacity:.32;color:var(--ink-dim);background:rgba(11,16,38,.7);border-color:var(--line);font-size:12px}
+.node-star.sealed{opacity:.18;color:var(--ink-dim);background:rgba(11,16,38,.7);border:1px dashed var(--line);font-size:11px}
+.node-info{padding:6px 0}
+.node-name{font-size:14.5px;font-weight:700;display:flex;align-items:center;gap:7px;letter-spacing:-.01em}
+.climb-node.won .node-name{color:var(--ink)}
+.climb-node:not(.won) .node-name{color:var(--ink-dim)}
+.climb-node.tier-distant .node-name,.climb-node.tier-sealed .node-name{opacity:.6;font-weight:600}
+.node-check{color:var(--star);font-size:12px}
+.node-sub{font-size:11.5px;color:var(--ink-dim);margin-top:2px;font-variant-numeric:tabular-nums}
+.climb-node.won .node-sub{color:var(--star)}
+.node-desc{font-size:12px;color:var(--ink-dim);line-height:1.5;margin-top:5px;max-width:270px}
+.node-desc.veil{font-style:italic;opacity:.62}
+
+/* ---------- reasons ---------- */
+.reason{display:flex;gap:11px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--line);font-size:15px;line-height:1.45}
 .reason:last-of-type{border-bottom:none}
 .reason .st{color:var(--star);flex:none}
 .reason .x{margin-left:auto;background:none;border:none;color:var(--ink-dim);cursor:pointer;font-size:14px;padding:2px 6px}
-.addreason{display:flex;gap:8px;margin-top:12px}
-.addreason input{flex:1;background:var(--night-2);border:1px solid var(--line);border-radius:12px;color:var(--ink);padding:11px 12px;font-size:14px;font-family:inherit}
-.addreason button{background:var(--card-2);border:1px solid var(--line);color:var(--ink);border-radius:12px;padding:0 16px;font-size:14px;cursor:pointer;font-family:inherit}
+.addreason{display:flex;gap:8px;margin-top:13px}
+.addreason input{flex:1;background:var(--night-2);border:1px solid var(--line);border-radius:13px;color:var(--ink);padding:12px;font-size:14px;font-family:inherit}
+.addreason button{background:var(--card-2);border:1px solid var(--line-hi);color:var(--ink);border-radius:13px;padding:0 17px;font-size:14px;cursor:pointer;font-family:inherit;font-weight:600}
 
-/* logs */
-.urgeitem{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:13px}
+/* ---------- logs ---------- */
+.urgeitem{padding:12px 0;border-bottom:1px solid var(--line);font-size:13px}
 .urgeitem:last-child{border-bottom:none}
+.urgeitem .r1{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
 .urgeitem .w{color:var(--aurora);font-weight:700;flex:none}
 .urgeitem .l{color:var(--rose);font-weight:700;flex:none}
 .urgeitem .meta{color:var(--ink-dim);text-align:right;line-height:1.5}
+.urgeitem .lesson{font-size:12px;color:var(--ink-dim);margin-top:6px;font-style:italic;line-height:1.5;padding-left:2px;border-left:2px solid var(--line-hi);padding-left:9px}
 
-.intitem{padding:11px 0;border-bottom:1px solid var(--line)}
+.intitem{padding:12px 0;border-bottom:1px solid var(--line)}
 .intitem:last-child{border-bottom:none}
 .intitem .row1{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700}
 .intitem .row1 .pied{font-size:10px;background:rgba(229,139,160,.15);color:var(--rose);border-radius:999px;padding:2px 8px;font-weight:700;letter-spacing:.04em}
 .intitem .row1 .x{margin-left:auto;background:none;border:none;color:var(--ink-dim);cursor:pointer;font-size:13px}
-.intitem .row2{display:flex;gap:14px;font-size:12px;color:var(--ink-dim);margin-top:4px;flex-wrap:wrap}
+.intitem .row2{display:flex;gap:14px;font-size:12px;color:var(--ink-dim);margin-top:5px;flex-wrap:wrap}
 .intitem .row2 b{color:var(--star)}
 .intitem .row2 b.c{color:var(--aurora)}
-.intitem .nt{font-size:12px;color:var(--ink-dim);margin-top:4px;font-style:italic}
+.intitem .nt{font-size:12px;color:var(--ink-dim);margin-top:5px;font-style:italic}
 
-/* chart */
-.chartwrap{background:var(--night-2);border:1px solid var(--line);border-radius:14px;padding:14px 10px 8px;margin-bottom:12px}
+/* ---------- chart ---------- */
+.chartwrap{background:rgba(11,16,38,.5);border:1px solid var(--line);border-radius:15px;padding:14px 10px 8px;margin-bottom:13px}
 .chartwrap svg{width:100%;height:auto;display:block}
 .chartlegend{display:flex;gap:16px;justify-content:center;font-size:11px;color:var(--ink-dim);padding:6px 0 4px}
 .chartlegend span{display:flex;align-items:center;gap:5px}
 .chartlegend i{width:14px;height:3px;border-radius:2px;display:inline-block}
 .chartlegend .ring{width:9px;height:9px;border-radius:50%;border:2px solid var(--rose);background:transparent}
 
-/* nav */
-nav{position:fixed;left:0;right:0;bottom:0;z-index:20;background:rgba(11,16,38,.92);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-top:1px solid var(--line);padding:6px 8px calc(6px + env(safe-area-inset-bottom))}
-nav .inner{max-width:520px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:4px;align-items:end}
-nav button{background:none;border:none;color:var(--ink-dim);font-family:inherit;font-size:10px;cursor:pointer;padding:4px 0 2px;display:flex;flex-direction:column;align-items:center;gap:3px}
-nav button .ic{font-size:21px;line-height:1}
-nav button.on{color:var(--star)}
-nav .sosfab{width:56px;height:56px;border-radius:50%;margin:-20px auto 0;background:linear-gradient(135deg,#3E4FBF,#7A5CE0);color:#fff;font-size:14px;font-weight:800;letter-spacing:.05em;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(90,80,220,.55);border:2px solid rgba(150,160,255,.4);padding:0}
-nav .sosfab:active{transform:scale(.93)}
+/* ---------- rvp ---------- */
+.rvp-scores{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:9px}
+.rvp-scores .side{text-align:center;flex:1}
+.rvp-scores .n{font-size:36px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.rvp-scores .n.real{color:var(--violet)}
+.rvp-scores .n.pix{color:var(--ink-dim)}
+.rvp-scores .lab{font-size:11px;color:var(--ink-dim);letter-spacing:.05em;text-transform:uppercase;margin-top:2px}
+.rvp-scores .vs{font-size:13px;color:var(--ink-dim);padding:0 8px}
+.rvp-bar{height:11px;border-radius:6px;background:var(--night-2);overflow:hidden;display:flex}
+.rvp-bar .real{background:linear-gradient(90deg,#7A5CE0,#9D8BF0);height:100%;transition:width .7s cubic-bezier(.2,.7,.3,1)}
+.rvp-bar .pix{background:rgba(138,147,191,.3);height:100%;transition:width .7s cubic-bezier(.2,.7,.3,1)}
+.rvp-msg{font-size:13px;line-height:1.55;color:var(--ink-dim);margin-top:11px}
+.rvp-msg b{color:var(--violet)}
 
-/* overlays */
-.overlay{position:fixed;inset:0;z-index:50;background:rgba(8,11,28,.96);display:none;flex-direction:column;overflow-y:auto;padding:22px 20px calc(80px + env(safe-area-inset-bottom))}
-.overlay.open{display:flex;animation:fade .2s ease}
+/* ---------- nav ---------- */
+nav{position:fixed;left:0;right:0;bottom:0;z-index:20;background:rgba(11,16,38,.82);backdrop-filter:blur(22px) saturate(1.4);-webkit-backdrop-filter:blur(22px) saturate(1.4);border-top:1px solid var(--line);padding:7px 8px calc(7px + env(safe-area-inset-bottom))}
+nav .inner{max-width:520px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr);gap:2px;align-items:end}
+nav button{background:none;border:none;color:var(--ink-dim);font-family:inherit;font-size:9.5px;letter-spacing:.02em;cursor:pointer;padding:5px 0 2px;display:flex;flex-direction:column;align-items:center;gap:4px;transition:color .2s ease}
+nav button .ic{width:23px;height:23px;display:flex;align-items:center;justify-content:center}
+nav button .ic svg{width:22px;height:22px}
+nav button.on{color:var(--star)}
+nav button.on .ic{filter:drop-shadow(0 0 6px rgba(245,200,107,.45))}
+nav .sosfab{width:58px;height:58px;border-radius:50%;margin:-22px auto 0;background:linear-gradient(140deg,#4152C8,#7A5CE0);color:#fff;font-size:14px;font-weight:800;letter-spacing:.06em;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(90,80,220,.6),inset 0 1px 0 rgba(255,255,255,.25);border:2px solid rgba(150,160,255,.4);padding:0;transition:transform .1s ease}
+nav .sosfab:active{transform:scale(.92)}
+
+/* ---------- overlays ---------- */
+.overlay{position:fixed;inset:0;z-index:50;background:rgba(8,11,28,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:none;flex-direction:column;overflow-y:auto;padding:calc(22px + env(safe-area-inset-top)) 20px calc(80px + env(safe-area-inset-bottom))}
+.overlay.open{display:flex;animation:ovin .28s cubic-bezier(.2,.7,.3,1)}
+@keyframes ovin{from{opacity:0}to{opacity:1}}
 .overlay .inner{max-width:520px;margin:0 auto;width:100%}
-.overlay .close{position:fixed;top:calc(12px + env(safe-area-inset-top));right:14px;background:var(--card-2);border:1px solid var(--line);color:var(--ink);width:46px;height:46px;border-radius:50%;font-size:18px;cursor:pointer;z-index:60;box-shadow:0 4px 14px rgba(0,0,0,.4)}
-.ovtitle{padding-right:54px}
-.ovtitle{font-size:26px;font-weight:800;margin:10px 0 4px}
-.ovsub{font-size:14px;color:var(--ink-dim);line-height:1.5;margin-bottom:18px}
+.overlay .close{position:fixed;top:calc(14px + env(safe-area-inset-top));right:14px;background:var(--card-2);border:1px solid var(--line-hi);color:var(--ink);width:46px;height:46px;border-radius:50%;font-size:18px;cursor:pointer;z-index:60;box-shadow:0 4px 14px rgba(0,0,0,.4)}
+.ovtitle{padding-right:54px;font-size:27px;font-weight:800;margin:10px 0 5px;letter-spacing:-.02em}
+.ovsub{font-size:14px;color:var(--ink-dim);line-height:1.55;margin-bottom:18px}
+
+/* modal (check-in) */
+.overlay.modal{justify-content:center;padding:24px}
+.modalcard{background:linear-gradient(180deg,var(--card-2),var(--card));border:1px solid var(--line-hi);border-radius:26px;padding:24px 22px;max-width:440px;margin:0 auto;width:100%;box-shadow:0 24px 60px -20px rgba(0,0,0,.8);animation:pop .32s cubic-bezier(.2,.9,.3,1)}
+@keyframes pop{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:none}}
+.modalcard .mt{font-size:23px;font-weight:800;letter-spacing:-.02em}
+.modalcard .msub{font-size:13.5px;color:var(--ink-dim);line-height:1.55;margin:7px 0 18px}
+.ci-row{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}
+.ci-row:last-of-type{border-bottom:none}
+.ci-row .d{font-size:14.5px;font-weight:600;flex:1}
+.ci-row .d small{display:block;color:var(--ink-dim);font-size:11px;font-weight:400;margin-top:1px}
+.ci-row button{border:none;border-radius:11px;padding:10px 15px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:transform .08s ease}
+.ci-row button:active{transform:scale(.95)}
+.ci-row .ci-clean{background:linear-gradient(135deg,var(--aurora),#8FF2DC);color:#08201b}
+.ci-row .ci-slip{background:transparent;color:var(--ink-dim);border:1px solid var(--line-hi)}
+.ci-all{width:100%;margin-top:16px;border:none;border-radius:14px;padding:14px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;color:#08201b;background:linear-gradient(135deg,var(--aurora),#8FF2DC);box-shadow:0 8px 20px -8px rgba(94,224,192,.6)}
+.ci-later{width:100%;margin-top:9px;background:none;border:none;color:var(--ink-dim);font-size:13px;cursor:pointer;font-family:inherit;padding:8px;text-decoration:underline}
 
 /* breathing */
 .breathwrap{display:flex;flex-direction:column;align-items:center;padding:16px 0 8px}
-.bcircle{width:150px;height:150px;border-radius:50%;background:radial-gradient(circle at 35% 30%, rgba(122,92,224,.55), rgba(62,79,191,.28) 65%, transparent 75%);border:2px solid rgba(140,150,255,.5);display:flex;align-items:center;justify-content:center;transform:scale(.72);transition:transform 4s cubic-bezier(.4,0,.4,1);box-shadow:0 0 40px rgba(100,100,240,.3)}
+.bcircle{width:154px;height:154px;border-radius:50%;background:radial-gradient(circle at 35% 30%, rgba(122,92,224,.55), rgba(62,79,191,.28) 65%, transparent 75%);border:2px solid rgba(140,150,255,.5);display:flex;align-items:center;justify-content:center;transform:scale(.72);transition:transform 4s cubic-bezier(.4,0,.4,1);box-shadow:0 0 44px rgba(100,100,240,.32)}
 .bcircle.grow{transform:scale(1.15)}
-.bword{font-size:17px;font-weight:700;letter-spacing:.1em}
+.bword{font-size:17px;font-weight:700;letter-spacing:.08em}
 .bcount{margin-top:14px;font-size:13px;color:var(--ink-dim)}
 .wave-msg{margin-top:16px;text-align:center;font-size:14px;color:var(--ink-dim);line-height:1.55;max-width:320px}
 .wave-msg b{color:var(--aurora)}
 
 /* chips + ratings */
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
-.chip{background:var(--night-2);border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:9px 15px;font-size:13px;cursor:pointer;font-family:inherit}
+.chip{background:var(--night-2);border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:10px 15px;font-size:13px;cursor:pointer;font-family:inherit;transition:transform .08s ease}
+.chip:active{transform:scale(.95)}
 .chip.sel{background:rgba(245,200,107,.16);border-color:var(--star);color:var(--star)}
 .chip.sel.rosey{background:rgba(229,139,160,.15);border-color:var(--rose);color:var(--rose)}
 .rate5{display:flex;gap:8px;margin-top:8px}
-.rate5 button{flex:1;background:var(--night-2);border:1px solid var(--line);color:var(--ink-dim);border-radius:12px;padding:12px 0;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit}
+.rate5 button{flex:1;background:var(--night-2);border:1px solid var(--line);color:var(--ink-dim);border-radius:13px;padding:13px 0;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;transition:transform .08s ease}
+.rate5 button:active{transform:scale(.95)}
 .rate5 button.sel{background:rgba(122,92,224,.25);border-color:#7A5CE0;color:#fff}
 .rate5.gold button.sel{background:rgba(245,200,107,.2);border-color:var(--star);color:var(--star)}
 .rate5.teal button.sel{background:rgba(94,224,192,.18);border-color:var(--aurora);color:var(--aurora)}
 .field-hint{font-size:13px;color:var(--ink-dim);margin:14px 0 2px}
-.edge-warn{display:none;margin-top:10px;font-size:13px;line-height:1.5;color:var(--rose);background:rgba(229,139,160,.08);border:1px solid rgba(229,139,160,.25);border-radius:12px;padding:10px 12px}
+.edge-warn{display:none;margin-top:10px;font-size:13px;line-height:1.5;color:var(--rose);background:rgba(229,139,160,.08);border:1px solid rgba(229,139,160,.25);border-radius:13px;padding:11px 13px}
 .edge-warn.show{display:block}
+.sec-label{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-dim);font-weight:600;margin:20px 0 7px}
 
-.bigbtn{width:100%;border:none;border-radius:16px;padding:16px;font-size:16px;font-weight:800;cursor:pointer;margin-top:14px;font-family:inherit;color:var(--night);background:linear-gradient(135deg,var(--aurora),#8FF2DC)}
-.bigbtn.ghost{background:transparent;color:var(--ink-dim);border:1px solid var(--line);font-weight:600}
-.bigbtn.gold{background:linear-gradient(135deg,var(--star),#FFDF9E)}
-.bigbtn.violet{background:linear-gradient(135deg,#7A5CE0,#9D8BF0);color:#fff}
+.bigbtn{width:100%;border:none;border-radius:16px;padding:16px;font-size:16px;font-weight:800;cursor:pointer;margin-top:13px;font-family:inherit;color:#08201b;background:linear-gradient(135deg,var(--aurora),#8FF2DC);transition:transform .08s ease;box-shadow:0 10px 24px -12px rgba(94,224,192,.6)}
+.bigbtn:active{transform:scale(.98)}
+.bigbtn.ghost{background:transparent;color:var(--ink-dim);border:1px solid var(--line-hi);font-weight:600;box-shadow:none}
+.bigbtn.gold{background:linear-gradient(135deg,var(--star),#FFDF9E);color:#20160a;box-shadow:0 10px 24px -12px rgba(245,200,107,.6)}
+.bigbtn.violet{background:linear-gradient(135deg,#7A5CE0,#9D8BF0);color:#fff;box-shadow:0 10px 24px -12px rgba(122,92,224,.6)}
 
-#toast{position:fixed;left:50%;bottom:calc(104px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);background:var(--card-2);border:1px solid rgba(245,200,107,.45);color:var(--ink);padding:12px 20px;border-radius:14px;font-size:14px;z-index:99;opacity:0;pointer-events:none;transition:all .3s ease;max-width:88vw;text-align:center;box-shadow:0 8px 30px rgba(0,0,0,.5)}
-#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-.mini-note{font-size:12px;color:var(--ink-dim);line-height:1.5;margin-top:14px}
-.bottomspacer{height:70px}
-.sec-label{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-dim);font-weight:600;margin:20px 0 6px}
-
-/* real vs pixels */
-.rvp-scores{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
-.rvp-scores .side{text-align:center;flex:1}
-.rvp-scores .n{font-size:34px;font-weight:800;font-variant-numeric:tabular-nums}
-.rvp-scores .n.real{color:var(--violet)}
-.rvp-scores .n.pix{color:var(--ink-dim)}
-.rvp-scores .lab{font-size:11px;color:var(--ink-dim);letter-spacing:.06em;text-transform:uppercase;margin-top:2px}
-.rvp-scores .vs{font-size:13px;color:var(--ink-dim);padding:0 8px}
-.rvp-bar{height:10px;border-radius:5px;background:var(--night-2);overflow:hidden;display:flex}
-.rvp-bar .real{background:linear-gradient(90deg,#7A5CE0,#9D8BF0);height:100%;transition:width .6s ease}
-.rvp-bar .pix{background:rgba(138,147,191,.35);height:100%;transition:width .6s ease}
-.rvp-msg{font-size:13px;line-height:1.5;color:var(--ink-dim);margin-top:10px}
-.rvp-msg b{color:var(--violet)}
-
-/* catch-up */
-.cu-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}
-.cu-row:last-of-type{border-bottom:none}
-.cu-row .d{font-size:14px;font-weight:600;flex:1}
-.cu-row button{border:none;border-radius:10px;padding:9px 14px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
-.cu-row .cu-clean{background:rgba(94,224,192,.15);color:var(--aurora);border:1px solid rgba(94,224,192,.35)}
-.cu-row .cu-slip{background:transparent;color:var(--ink-dim);border:1px solid var(--line)}
-.cu-all{width:100%;margin-top:12px;border:none;border-radius:12px;padding:12px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;color:var(--night);background:linear-gradient(135deg,var(--aurora),#8FF2DC)}
-
+/* playbook */
 .pb{border-bottom:1px solid var(--line)}
 .pb:last-of-type{border-bottom:none}
-.pb summary{padding:13px 0;font-size:14px;font-weight:600;cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px}
+.pb summary{padding:14px 0;font-size:14px;font-weight:600;cursor:pointer;list-style:none;display:flex;align-items:center;gap:9px}
 .pb summary::-webkit-details-marker{display:none}
 .pb summary::after{content:'▾';margin-left:auto;color:var(--ink-dim);font-size:11px;transition:transform .2s ease}
 .pb[open] summary::after{transform:rotate(180deg)}
-.pb p{font-size:13px;color:var(--ink-dim);line-height:1.6;padding:0 2px 13px}
+.pb p{font-size:13px;color:var(--ink-dim);line-height:1.65;padding:0 2px 14px}
+
+#toast{position:fixed;left:50%;bottom:calc(106px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);background:var(--card-2);border:1px solid rgba(245,200,107,.45);color:var(--ink);padding:13px 20px;border-radius:15px;font-size:14px;z-index:99;opacity:0;pointer-events:none;transition:all .3s cubic-bezier(.2,.7,.3,1);max-width:88vw;text-align:center;box-shadow:0 12px 34px rgba(0,0,0,.55)}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.mini-note{font-size:12px;color:var(--ink-dim);line-height:1.55;margin-top:14px}
+.bottomspacer{height:70px}
+
+/* milestone celebration */
+#msOverlay .inner{position:relative}
+.ms-burst{position:absolute;top:-10px;left:50%;width:1px;height:1px;pointer-events:none}
+.ms-burst i{position:absolute;width:7px;height:7px;border-radius:50%;background:var(--star);opacity:0;animation:burst 1.1s ease-out forwards}
+@keyframes burst{0%{opacity:1;transform:translate(0,0) scale(1)}100%{opacity:0;transform:translate(var(--bx),var(--by)) scale(.3)}}
 
 /* PIN lock */
 .lock{position:fixed;inset:0;z-index:200;background:var(--night);display:none;flex-direction:column;align-items:center;justify-content:center;padding:24px}
 .lock.open{display:flex}
-.lock .lbrand{font-weight:700;letter-spacing:.14em;font-size:14px;text-transform:uppercase;color:var(--ink-dim)}
+.lock .lbrand{font-weight:700;letter-spacing:.16em;font-size:13px;text-transform:uppercase;color:var(--ink-dim)}
 .lock .lbrand b{color:var(--star)}
 .lock .lmsg{font-size:15px;color:var(--ink);margin-top:14px;text-align:center;min-height:22px}
 .lock .dots{display:flex;gap:16px;margin:20px 0 28px}
@@ -267,6 +334,11 @@ nav .sosfab:active{transform:scale(.93)}
     <div class="hero">
       <div class="ringwrap">
         <svg viewBox="0 0 200 200" class="ring" aria-hidden="true">
+          <defs>
+            <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#FFE0A0"/><stop offset="100%" stop-color="#F5C86B"/>
+            </linearGradient>
+          </defs>
           <circle class="rbg" cx="100" cy="100" r="88"/>
           <circle class="rfg" id="ringFg" cx="100" cy="100" r="88"/>
         </svg>
@@ -276,23 +348,13 @@ nav .sosfab:active{transform:scale(.93)}
         </div>
       </div>
       <div class="sub" id="streakSub"></div>
-    </div>
-
-    <div class="card" id="checkinCard">
-      <h3>✅ Today's check-in</h3>
-      <div id="checkinBody"></div>
-    </div>
-
-    <div class="card" id="catchupCard" style="display:none">
-      <h3>⏪ Catch up on missed days</h3>
-      <div style="font-size:13px;color:var(--ink-dim);line-height:1.5;margin-bottom:6px">Mark each missed day honestly — the streak recalculates instantly.</div>
-      <div id="catchupList"></div>
-      <button class="cu-all" id="cuAllClean" style="display:none">All of them were clean ✨</button>
+      <div id="statusSlot"></div>
+      <button class="slip-link" id="slipTodayLink">Slipped today? Log it honestly →</button>
     </div>
 
     <div class="card">
       <h3>💞 Intimacy</h3>
-      <div style="font-size:13px;line-height:1.5;color:var(--ink-dim)">One tap per moment with her — good or rough. <b style="color:var(--aurora)">Never touches your streak.</b></div>
+      <div style="font-size:13px;line-height:1.55;color:var(--ink-dim)">One tap per moment with her — the great nights and the rough ones. <b style="color:var(--aurora)">Never touches your streak.</b></div>
       <button class="bigbtn violet" id="intimacyBtn">Log intimacy 💞</button>
     </div>
 
@@ -305,22 +367,6 @@ nav .sosfab:active{transform:scale(.93)}
       </div>
       <div class="rvp-bar"><div class="real" id="rvpBarReal" style="width:50%"></div><div class="pix" id="rvpBarPix" style="width:50%"></div></div>
       <div class="rvp-msg" id="rvpMsg"></div>
-    </div>
-
-    <div class="card">
-      <h3>📝 Tonight's note <span class="soft">private</span></h3>
-      <textarea class="note" id="dayNote" placeholder="How was today? Any wins, urges, or things you noticed?"></textarea>
-      <button class="savenote" id="saveNoteBtn">Save note</button>
-    </div>
-
-    <div class="card">
-      <h3>📊 At a glance</h3>
-      <div class="grid">
-        <div class="stat"><div class="v gold" id="stBest">0</div><div class="k">Best streak</div></div>
-        <div class="stat"><div class="v teal" id="stTotal">0</div><div class="k">Total clean days</div></div>
-        <div class="stat"><div class="v teal" id="stUrges">0</div><div class="k">Urges beaten</div></div>
-        <div class="stat"><div class="v violet" id="stStrength">–</div><div class="k">Avg strength (last 5)</div></div>
-      </div>
     </div>
     <div class="bottomspacer"></div>
   </section>
@@ -338,9 +384,9 @@ nav .sosfab:active{transform:scale(.93)}
         </div>
       </div>
       <div class="grid">
-        <div class="stat"><div class="v gold" id="rvStrength">–</div><div class="k">Latest strength</div></div>
-        <div class="stat"><div class="v teal" id="rvConf">–</div><div class="k">Latest confidence</div></div>
-        <div class="stat"><div class="v" id="rvSex">0</div><div class="k">Successful sex</div></div>
+        <div class="stat"><div class="v gold" id="rvAvgStr">–</div><div class="k">Avg strength (last 5)</div></div>
+        <div class="stat"><div class="v teal" id="rvAvgConf">–</div><div class="k">Avg confidence (last 5)</div></div>
+        <div class="stat"><div class="v violet" id="rvSex">0</div><div class="k">Successful sex</div></div>
         <div class="stat"><div class="v rose" id="rvPied">–</div><div class="k">PIED rate (last 5)</div></div>
       </div>
       <div class="sec-label" style="margin-top:16px">Intimacy log</div>
@@ -360,17 +406,29 @@ nav .sosfab:active{transform:scale(.93)}
         <span><i style="border:1px solid var(--star)"></i>Today</span>
         <span>💞 Intimacy</span>
       </div>
-      <div class="mini-note">Tap a past day to set or fix it.</div>
-    </div>
-
-    <div class="card">
-      <h3>🌌 Milestones</h3>
-      <div id="msList"></div>
+      <div class="mini-note">Tap any past day to set or fix it.</div>
     </div>
 
     <div class="card">
       <h3>🌊 Urge & slip log</h3>
       <div id="urgeList"><div class="mini-note">No urges logged yet. When one hits, use the SOS button — riding it out counts as a win here.</div></div>
+    </div>
+    <div class="bottomspacer"></div>
+  </section>
+
+  <!-- ============ MILESTONES ============ -->
+  <section class="screen" id="scr-milestones">
+    <div class="ms-summary">
+      <div class="stat"><div class="v gold" id="msBest">0</div><div class="k">Best streak</div></div>
+      <div class="stat"><div class="v teal" id="msTotal">0</div><div class="k">Total clean days</div></div>
+      <div class="stat"><div class="v violet" id="msStars">0</div><div class="k">Stars earned</div></div>
+    </div>
+
+    <div id="nextStarSlot"></div>
+
+    <div class="card">
+      <h3>🌌 The climb <span class="soft">bottom → the reboot</span></h3>
+      <div class="climb" id="climb"></div>
     </div>
     <div class="bottomspacer"></div>
   </section>
@@ -385,18 +443,6 @@ nav .sosfab:active{transform:scale(.93)}
         <button id="reasonAdd">Add</button>
       </div>
       <div class="mini-note">Shown back to you during an urge — make them personal and specific.</div>
-    </div>
-
-    <div class="card">
-      <h3>📖 The playbook</h3>
-      <div>
-        <details class="pb"><summary>🌊 Urges are waves</summary><p>They build, peak, and pass — usually within 10–20 minutes. Don't fight the wave; just don't act while it passes. Every wave you surf weakens the next one.</p></details>
-        <details class="pb"><summary>🚪 Change the scene</summary><p>Bed + phone + alone + late is the classic trap. Stand up, leave the room, phone stays behind.</p></details>
-        <details class="pb"><summary>⚠️ Edging is the trap within the trap</summary><p>Hours of elevated dopamine make it far more reinforcing than a quick slip — and it's the pattern most linked to PIED. If a slip starts, 5 minutes is far less damage than 5 hours.</p></details>
-        <details class="pb"><summary>↺ A slip is data, not doom</summary><p>The streak resets; the progress doesn't. Log the trigger, learn one thing, skip the shame spiral — the spiral is the most dangerous part.</p></details>
-        <details class="pb"><summary>💞 Intimacy is the cure, not the test</summary><p>Rough nights with PIED during the reboot are a symptom on its way out, not proof of failure. Watch the trend line, not any single night.</p></details>
-        <details class="pb"><summary>🧠 Rewiring is slow but real</summary><p>The hardest stretch is the first 2–4 weeks; real change comes over 60–90 days. That's why the constellation completes at day 90.</p></details>
-      </div>
     </div>
 
     <div class="card">
@@ -415,18 +461,30 @@ nav .sosfab:active{transform:scale(.93)}
 <!-- ============ NAV ============ -->
 <nav>
   <div class="inner">
-    <button data-scr="scr-today" class="on"><span class="ic">☀︎</span>Today</button>
-    <button data-scr="scr-journey"><span class="ic">✦</span>Journey</button>
+    <button data-scr="scr-today" class="on"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.2v2.3M12 19.5v2.3M2.2 12h2.3M19.5 12h2.3M5 5l1.6 1.6M17.4 17.4L19 19M19 5l-1.6 1.6M6.6 17.4L5 19"/></svg></span>Today</button>
+    <button data-scr="scr-journey"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 20.5h17"/><path d="M6 20.5v-7M11 20.5V6M16 20.5v-9M20.5 20.5V9.5"/></svg></span>Journey</button>
     <button class="sosfab" id="sosBtn">SOS</button>
-    <button data-scr="scr-why"><span class="ic">♥</span>Why</button>
+    <button data-scr="scr-milestones"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M2.5 20.5h19L15 6.5l-3.4 6.6-2.4-3.3z"/><path d="M15 6.5l1.2-2.8 1 2.2"/></svg></span>Milestones</button>
+    <button data-scr="scr-why"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 20.2S3.6 15.4 3.6 9.4C3.6 6.6 5.6 4.8 8 4.8c1.8 0 3.2 1.1 4 2.4.8-1.3 2.2-2.4 4-2.4 2.4 0 4.4 1.8 4.4 4.6 0 6-8.4 10.8-8.4 10.8z"/></svg></span>Why</button>
   </div>
 </nav>
+
+<!-- ============ CHECK-IN (morning) ============ -->
+<div class="overlay modal" id="checkinOverlay">
+  <div class="modalcard">
+    <div class="mt" id="ciTitle">Welcome back</div>
+    <div class="msub" id="ciSub">A day only counts as clean once you mark it. How did it go?</div>
+    <div id="ciList"></div>
+    <button class="ci-all" id="ciAllClean" style="display:none">All of them were clean ✨</button>
+    <button class="ci-later" id="ciLater">Later</button>
+  </div>
+</div>
 
 <!-- ============ SOS OVERLAY ============ -->
 <div class="overlay" id="sosOverlay">
   <div class="inner">
     <button class="close" data-close="sosOverlay">✕</button>
-    <div class="ovtitle">Ride the wave.</div>
+    <div class="ovtitle">Ride the wave 🌊</div>
     <div class="ovsub">This urge will peak and pass in a few minutes whether you act on it or not. Breathe with the circle — in as it grows, out as it shrinks.</div>
 
     <div class="breathwrap">
@@ -437,6 +495,16 @@ nav .sosfab:active{transform:scale(.93)}
 
     <div class="sec-label">While you breathe — remember why</div>
     <div id="sosReasons" style="font-size:15px;line-height:1.6"></div>
+
+    <div class="sec-label">Remember how this works</div>
+    <div>
+      <details class="pb"><summary>🌊 Urges are waves</summary><p>They build, peak, and pass — usually within 10–20 minutes. Don't fight the wave; just don't act while it passes. Every wave you surf weakens the next one.</p></details>
+      <details class="pb"><summary>🚪 Change the scene</summary><p>Bed + phone + alone + late is the classic trap. Stand up, leave the room, phone stays behind.</p></details>
+      <details class="pb"><summary>⚠️ Edging is the trap within the trap</summary><p>Hours of elevated dopamine make it far more reinforcing than a quick slip — and it's the pattern most linked to PIED. If a slip starts, 5 minutes is far less damage than 5 hours.</p></details>
+      <details class="pb"><summary>↺ A slip is data, not doom</summary><p>The streak resets; the progress doesn't. Log the trigger, learn one thing, skip the shame spiral — the spiral is the most dangerous part.</p></details>
+      <details class="pb"><summary>💞 Intimacy is the cure, not the test</summary><p>Rough nights with PIED during the reboot are a symptom on its way out, not proof of failure. Watch the trend line, not any single night.</p></details>
+      <details class="pb"><summary>🧠 Rewiring is slow but real</summary><p>The hardest stretch is the first 2–4 weeks — day 14 often feels flat and heavy on purpose. Real change comes over 60–90 days. That's why the constellation completes at day 90.</p></details>
+    </div>
 
     <div class="sec-label">Break the pattern (pick one, do it now)</div>
     <div class="chips">
@@ -474,7 +542,7 @@ nav .sosfab:active{transform:scale(.93)}
 
     <div class="sec-label">How long was the session?</div>
     <div class="chips" id="slipDur">
-      <span class="chip" data-v="<15 min">Under 15 min</span>
+      <span class="chip" data-v="&lt;15 min">Under 15 min</span>
       <span class="chip" data-v="15–60 min">15–60 min</span>
       <span class="chip" data-v="1–3 hrs" data-edge="1">1–3 hrs</span>
       <span class="chip" data-v="3+ hrs" data-edge="1">3+ hrs</span>
@@ -552,11 +620,12 @@ nav .sosfab:active{transform:scale(.93)}
 </div>
 
 <!-- ============ MILESTONE CELEBRATION ============ -->
-<div class="overlay" id="msOverlay" style="justify-content:center;text-align:center">
-  <div class="inner">
-    <div style="font-size:74px" id="msEmoji">🌟</div>
-    <div class="ovtitle" id="msName" style="font-size:32px"></div>
-    <div class="ovsub" id="msDesc" style="max-width:340px;margin:0 auto 20px"></div>
+<div class="overlay modal" id="msOverlay">
+  <div class="inner" style="text-align:center">
+    <div class="ms-burst" id="msBurst"></div>
+    <div style="font-size:78px" id="msEmoji">🌟</div>
+    <div class="ovtitle" id="msName" style="font-size:33px;padding:0;text-align:center"></div>
+    <div class="ovsub" id="msDesc" style="max-width:340px;margin:8px auto 20px"></div>
     <button class="bigbtn gold" data-close="msOverlay" style="max-width:280px;margin:0 auto">Keep climbing ⛰️</button>
   </div>
 </div>
@@ -579,23 +648,31 @@ nav .sosfab:active{transform:scale(.93)}
 
 <script>
 /* =====================================================
-   Northstar v2 — private recovery tracker
+   Northstar v3 — private recovery tracker
    Streak rule: only solo PMO breaks the streak.
-   Standalone build — data saves on-device via localStorage; use Backup in Danger zone
+   Clean days are confirmed manually via the morning check-in.
+   Data saves on-device via localStorage; back it up in Settings.
 ===================================================== */
 const KEY = 'northstar-state-v1';
 
+/* n = name, e = emoji, desc = the vision: who you are when you're here.
+   ANCHOR (day 90) stays named on the map always; every other star reveals by distance. */
 const MILESTONES = [
-  {d:1,  e:'✨', n:'First Light',    desc:'One full day. The hardest star to place is the first one.'},
-  {d:3,  e:'🔥', n:'The Spark',      desc:'Three days — cravings peak around here. You held.'},
-  {d:7,  e:'🌙', n:'One Week',       desc:'A full week clean. Sleep and energy often start improving now.'},
-  {d:14, e:'⚡', n:'Fortnight',      desc:'Two weeks. The autopilot habit loop is genuinely weakening.'},
-  {d:21, e:'🧠', n:'Rewiring',       desc:'Three weeks — the classic habit-change threshold. New wiring is forming.'},
-  {d:30, e:'🌕', n:'One Month',      desc:'Thirty days. Many people report noticeably better sensitivity and mood here.'},
-  {d:45, e:'🚀', n:'Halfway Voyager',desc:'45 days. You are past the point most attempts ever reach.'},
-  {d:60, e:'💎', n:'Two Months',     desc:'Sixty days of proof that you run your brain, not the other way around.'},
-  {d:90, e:'👑', n:'The Reboot',     desc:'Ninety days — the full constellation. This is the classic full-reboot mark.'}
+  {d:1,   e:'✨', n:'First Light',      desc:'One clean day, chosen on purpose. Tonight you sleep knowing you picked yourself over the screen — and the whole climb stands on this one star.'},
+  {d:3,   e:'🔥', n:'The Spark',        desc:'Cravings peak right about here, and you\'re still standing. That quiet flicker of "I can actually do this" is starting to catch.'},
+  {d:7,   e:'🌤️', n:'The Clearing',     desc:'The fog lifts. Sleep comes easier, mornings feel sharper, and your head is a little quieter than it was.'},
+  {d:14,  e:'🌑', n:'The Long Dark',    desc:'Flat, grey, low on reward — and that\'s the reboot working, not you failing. This is the you that keeps climbing when there\'s no view yet.'},
+  {d:21,  e:'🧠', n:'The Rewire',       desc:'The old autopilot stops grabbing the wheel. Choice is returning where reflex used to be, and you can feel it.'},
+  {d:30,  e:'🌕', n:'First Moon',       desc:'A full month. You hold eye contact a little longer, urges pass a little faster, and the man in the mirror keeps his word.'},
+  {d:45,  e:'🚀', n:'Halfway Voyager',  desc:'Further than most attempts ever reach. You\'re not white-knuckling anymore — this is becoming who you are, not something you force.'},
+  {d:60,  e:'🔭', n:'Deep Sky',         desc:'Two months of proof you run your brain, not the reverse. With your wife you\'re present in the room, not managing it.'},
+  {d:90,  e:'👑', n:'The Reboot',       desc:'The full constellation, lit. Steadier, warmer, more here. Not a finish line — the person you\'ve become.'},
+  {d:120, e:'🌅', n:'New Horizon',      desc:'Still rising. This isn\'t a project anymore — clean is simply your baseline now.'},
+  {d:180, e:'☀️', n:'The Solstice',     desc:'Half a year. The old pattern is a story you tell, not a fight you\'re having. You trust yourself now, and that changes everything.'},
+  {d:270, e:'🏔️', n:'The High Reaches', desc:'The air is clear and the old life looks small from here. Living proof the rewire holds.'},
+  {d:365, e:'🌌', n:'A New Sky',        desc:'A whole new sky overhead. The climb quietly became the view. This is simply your life now.'}
 ];
+const ANCHOR_DAY = 90;   /* the North Star: always named on the map */
 
 const DEFAULT_REASONS = [
   'Real intimacy with my wife — presence, not pixels',
@@ -604,34 +681,42 @@ const DEFAULT_REASONS = [
   'My energy, focus and self-respect back'
 ];
 
-/* Fresh start — no personal data ships with the app.
-   Use the Journey calendar to backfill past days. */
-const SEED_INTIMACY = [];
 const SEED = {
   days: {},
   urges: [],
   intimacy: [],
   reasons: DEFAULT_REASONS.slice(),
   celebrated: [],
-  noteDraft: '',
-  pin: null
+  pin: null,
+  pinAsked: false,
+  startDate: null,
+  checkinShownOn: null
 };
 
 let S = null;
 let calCursor = new Date();
 
-/* ---------- storage (standalone: saves on this device) ---------- */
+/* ---------- storage ---------- */
 async function loadState(){
   try{
     const raw = localStorage.getItem(KEY);
     if(raw){
       S = JSON.parse(raw);
-      if(!S.intimacy){ S.intimacy = []; }
-      if(S.pin===undefined){ S.pin=null; }
+      if(!S.intimacy) S.intimacy = [];
+      if(!S.urges) S.urges = [];
+      if(!S.reasons) S.reasons = DEFAULT_REASONS.slice();
+      if(!S.celebrated) S.celebrated = [];
+      if(S.pin===undefined) S.pin=null;
+      if(!S.startDate){
+        const logged = Object.keys(S.days||{}).sort();
+        S.startDate = logged.length ? logged[0] : todayStr();
+      }
+      if(S.checkinShownOn===undefined) S.checkinShownOn=null;
       return;
     }
   }catch(e){ /* corrupt or blocked — start fresh */ }
   S = JSON.parse(JSON.stringify(SEED));
+  S.startDate = todayStr();
   await saveState();
 }
 async function saveState(){
@@ -639,41 +724,152 @@ async function saveState(){
   catch(e){ toast('⚠️ Could not save — storage may be blocked in private browsing'); }
 }
 
+/* ---------- haptics (no-op where unsupported, e.g. iOS Safari) ---------- */
+function buzz(p){ try{ if(navigator.vibrate) navigator.vibrate(p); }catch(e){} }
+
 /* ---------- date helpers ---------- */
 const fmt = d => d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 const todayStr = () => fmt(new Date());
-/* local-time ISO (no Z) — keeps events on the correct local calendar day */
 const localISO = d => fmt(d)+'T'+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')+':'+String(d.getSeconds()).padStart(2,'0');
 function addDays(str,n){ const d=new Date(str+'T12:00:00'); d.setDate(d.getDate()+n); return fmt(d); }
+function niceDate(ds){ return new Date(ds+'T12:00:00').toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'}); }
+function niceShort(ds){ return new Date(ds+'T12:00:00').toLocaleDateString(undefined,{month:'short',day:'numeric'}); }
+function daysAgo(ds){
+  const n = Math.round((new Date(todayStr()+'T12:00:00') - new Date(ds+'T12:00:00'))/86400000);
+  return n<=0?'today':n===1?'yesterday':n+' days ago';
+}
 
 /* ---------- derived stats ---------- */
 function currentStreak(){
-  let n=0, d=todayStr();
+  let d = todayStr();
   if(S.days[d] && S.days[d].status==='slip') return 0;
-  if(S.days[d] && S.days[d].status==='clean'){ n=1; d=addDays(d,-1); }
-  else d=addDays(d,-1);
+  let n = 0;
+  if(S.days[d] && S.days[d].status==='clean') n++;   /* counts today only if already confirmed */
+  d = addDays(d,-1);
   while(S.days[d] && S.days[d].status==='clean'){ n++; d=addDays(d,-1); }
   return n;
 }
-function bestStreak(){
-  const dates = Object.keys(S.days).sort();
-  let best=0,run=0,prev=null;
+function runsList(){
+  const dates = Object.keys(S.days).filter(d=>S.days[d].status==='clean').sort();
+  const runs=[]; let run=0, prev=null, start=null;
   for(const d of dates){
-    if(S.days[d].status!=='clean'){ run=0; prev=null; continue; }
-    run = (prev && addDays(prev,1)===d) ? run+1 : 1;
-    prev=d; best=Math.max(best,run);
+    if(prev && addDays(prev,1)===d){ run++; }
+    else { if(run>0) runs.push({len:run,start:start,end:prev}); run=1; start=d; }
+    prev=d;
   }
-  return Math.max(best, currentStreak());
+  if(run>0) runs.push({len:run,start:start,end:prev});
+  return runs;
+}
+function bestStreak(){
+  const runs=runsList().map(r=>r.len);
+  return Math.max(currentStreak(), runs.length?Math.max(...runs):0);
+}
+function priorBest(){
+  const cur=currentStreak();
+  const runs=runsList().map(r=>r.len);
+  const i=runs.indexOf(cur); if(i>=0) runs.splice(i,1);
+  return runs.length?Math.max(...runs):0;
 }
 function totalClean(){ return Object.values(S.days).filter(x=>x.status==='clean').length; }
 function urgesBeaten(){ return S.urges.filter(u=>u.outcome==='resisted').length; }
-function nextMilestone(){ const s=currentStreak(); return MILESTONES.find(m=>m.d>s) || MILESTONES[MILESTONES.length-1]; }
+function nextMilestone(){ const s=currentStreak(); return MILESTONES.find(m=>m.d>s) || null; }
 function prevMilestoneDay(){ const s=currentStreak(); let p=0; for(const m of MILESTONES){ if(m.d<=s) p=m.d; } return p; }
+function wonCount(){ const b=bestStreak(); return MILESTONES.filter(m=>b>=m.d).length; }
+function milestoneEarnDate(dayN){
+  const dates = Object.keys(S.days).filter(d=>S.days[d].status==='clean').sort();
+  let run=0, prev=null;
+  for(const d of dates){
+    run = (prev && addDays(prev,1)===d) ? run+1 : 1;
+    prev=d;
+    if(run===dayN) return d;
+  }
+  return null;
+}
+/* Graded reveal (Option B): visibility depends on how far a star is from the
+   HIGHEST you've ever climbed — so a slip never re-hides a star you've unveiled. */
+function milestoneTier(m){
+  const best = bestStreak();
+  if(best >= m.d) return 'earned';
+  const away = m.d - best;
+  if(away <= 21)  return 'inview';    /* full star + vision */
+  if(away <= 60)  return 'emerging';  /* named, day shown, vision veiled */
+  if(away <= 120) return 'distant';   /* silhouette + day only */
+  return 'sealed';                    /* silhouette in the dark, no day, no name */
+}
 function sortedIntimacy(){ return S.intimacy.slice().sort((a,b)=> a.ts<b.ts?-1:1); }
-function avgStrengthLast5(){
-  const arr = sortedIntimacy().slice(-5);
+function avgLast5(key){
+  const arr=sortedIntimacy().slice(-5);
   if(!arr.length) return null;
-  return (arr.reduce((s,x)=>s+(x.strength||0),0)/arr.length);
+  return arr.reduce((s,x)=>s+(x[key]||0),0)/arr.length;
+}
+
+/* ---------- check-in (retrospective) ---------- */
+function pendingDays(){
+  const t = todayStr();
+  const y = addDays(t,-1);
+  const windowStart = addDays(t,-14);
+  let start = (S.startDate && S.startDate>windowStart) ? S.startDate : windowStart;
+  const res=[];
+  let d = start;
+  let guard=0;
+  while(d <= y && guard<400){
+    if(!S.days[d]) res.push(d);
+    d = addDays(d,1); guard++;
+  }
+  return res.slice(-10);
+}
+function buildCheckin(){
+  const pend = pendingDays();
+  const list = document.getElementById('ciList');
+  const t = document.getElementById('ciTitle');
+  const sub = document.getElementById('ciSub');
+  if(!pend.length){ list.innerHTML=''; return false; }
+  if(pend.length===1){
+    t.textContent='How did yesterday go?';
+    sub.textContent='A day only counts as clean once you mark it. No pressure — just be honest.';
+  } else {
+    t.textContent='Let\'s catch up';
+    sub.textContent=pend.length+' days are waiting to be checked in. Mark each one — a day only counts as clean once you confirm it.';
+  }
+  list.innerHTML = pend.map(ds=>`<div class="ci-row" data-ds="${ds}">
+      <span class="d">${niceDate(ds)}<small>${daysAgo(ds)}</small></span>
+      <button class="ci-clean" data-ds="${ds}">Stayed clean</button>
+      <button class="ci-slip" data-ds="${ds}">Slipped</button>
+    </div>`).join('');
+  list.querySelectorAll('.ci-clean').forEach(b=>b.onclick=async()=>{
+    S.days[b.dataset.ds]={status:'clean',note:''};
+    buzz(10); await saveState(); afterCheckinMark();
+  });
+  list.querySelectorAll('.ci-slip').forEach(b=>b.onclick=async()=>{
+    S.days[b.dataset.ds]={status:'slip',note:''};
+    buzz(18); await saveState(); afterCheckinMark();
+  });
+  const all=document.getElementById('ciAllClean');
+  all.style.display = pend.length>1 ? 'block':'none';
+  all.onclick=async()=>{
+    pend.forEach(ds=>{ S.days[ds]={status:'clean',note:''}; });
+    buzz(10); await saveState();
+    closeCheckin(); renderAll(); checkMilestone();
+    toast(pend.length+' clean days banked ✨');
+  };
+  return true;
+}
+function afterCheckinMark(){
+  renderAll(); checkMilestone();
+  if(!buildCheckin()){        /* all pending resolved */
+    closeCheckin();
+    toast('Checked in ✨ Streak updated.');
+  }
+}
+function openCheckin(){
+  if(buildCheckin()) document.getElementById('checkinOverlay').classList.add('open');
+}
+function closeCheckin(){ document.getElementById('checkinOverlay').classList.remove('open'); }
+function maybeAutoCheckin(){
+  if(pendingDays().length && S.checkinShownOn!==todayStr()){
+    S.checkinShownOn = todayStr(); saveState();
+    openCheckin();
+  }
 }
 
 /* ---------- render: hero ---------- */
@@ -684,59 +880,37 @@ function renderHero(){
   const nm = nextMilestone();
   const beaten = urgesBeaten();
   const from = prevMilestoneDay();
-  const frac = s>=nm.d ? 1 : Math.max(0, Math.min(1,(s-from)/Math.max(1,(nm.d-from))));
-  document.getElementById('ringFg').style.strokeDashoffset = (553*(1-frac)).toFixed(1);
-  const togo = Math.max(0, nm.d - s);
-  document.getElementById('streakSub').innerHTML =
-    (s===0 ? 'The climb starts with today\'s check-in'
-           : '<b>'+beaten+'</b> urge'+(beaten===1?'':'s')+' beaten')
-    + '<br><span class="nx">'+nm.e+' '+nm.n+'</span> in '+togo+' day'+(togo===1?'':'s');
-}
-
-/* ---------- render: check-in ---------- */
-function renderCheckin(){
-  const t = todayStr();
-  const rec = S.days[t];
-  const el = document.getElementById('checkinBody');
-  if(!rec){
-    el.innerHTML = `<div class="checkrow">
-      <button class="btn clean" id="ckClean">Clean day ✓</button>
-      <button class="btn slip" id="ckSlip">I slipped</button>
-    </div>
-    <div class="mini-note">Clean = no solo PMO. Intimacy with your wife always counts as clean.</div>`;
-    document.getElementById('ckClean').onclick = async ()=>{
-      S.days[t]={status:'clean',note:S.noteDraft||''}; S.noteDraft='';
-      await saveState(); renderAll();
-      toast('Star placed. Day '+currentStreak()+' banked ✨');
-      checkMilestone();
-    };
-    document.getElementById('ckSlip').onclick = ()=> openSlip();
-  } else if(rec.status==='clean'){
-    el.innerHTML = `<div class="checked-msg ok"><div class="dot">✓</div>
-      <div><b>Clean day banked.</b><br><span style="color:var(--ink-dim);font-size:13px">A new star joins your sky tonight. See you tomorrow.</span></div></div>
-      <button class="undo" id="ckUndo">undo</button>`;
-    document.getElementById('ckUndo').onclick = async ()=>{ S.noteDraft=S.days[t].note||''; delete S.days[t]; await saveState(); renderAll(); };
+  let frac, subHtml;
+  if(nm){
+    frac = Math.max(0, Math.min(1,(s-from)/Math.max(1,(nm.d-from))));
+    const togo = Math.max(0, nm.d - s);
+    subHtml = (s===0 ? 'The climb starts with your first check-in'
+                     : '<b>'+beaten+'</b> urge'+(beaten===1?'':'s')+' beaten')
+      + '<br><span class="nx">'+nm.e+' '+nm.n+'</span> in '+togo+' day'+(togo===1?'':'s');
   } else {
-    el.innerHTML = `<div class="checked-msg bad"><div class="dot">↺</div>
-      <div><b>Logged. Slate wiped — not your progress.</b><br><span style="color:var(--ink-dim);font-size:13px">Tomorrow is Day 1 of the next climb. Your ${totalClean()} clean days still count.</span></div></div>
-      <button class="undo" id="ckUndo">undo</button>`;
-    document.getElementById('ckUndo').onclick = async ()=>{ S.noteDraft=S.days[t].note||''; delete S.days[t]; await saveState(); renderAll(); };
+    frac = 1;
+    subHtml = '<b>'+beaten+'</b> urge'+(beaten===1?'':'s')+' beaten<br><span class="nx">☀️ Every star placed — the sky is yours</span>';
   }
+  document.getElementById('ringFg').style.strokeDashoffset = (553*(1-frac)).toFixed(1);
+  document.getElementById('streakSub').innerHTML = subHtml;
+  renderStatus();
 }
-
-/* ---------- render: stats ---------- */
-function renderStats(){
-  document.getElementById('stBest').textContent = bestStreak();
-  document.getElementById('stTotal').textContent = totalClean();
-  document.getElementById('stUrges').textContent = urgesBeaten();
-  const a = avgStrengthLast5();
-  document.getElementById('stStrength').textContent = a===null?'–':(Math.round(a*10)/10)+'/5';
-}
-
-/* ---------- render: note ---------- */
-function renderNote(){
+function renderStatus(){
+  const slot = document.getElementById('statusSlot');
   const t = todayStr();
-  document.getElementById('dayNote').value = (S.days[t] && S.days[t].note) || S.noteDraft || '';
+  const pend = pendingDays().length;
+  if(pend){
+    slot.innerHTML = `<div class="statuschip pending tap" id="statusChip">
+      <span class="ci">⏪</span><span><b>${pend} day${pend===1?'':'s'} to check in.</b> Tap to catch up.</span><span class="arw">›</span></div>`;
+    document.getElementById('statusChip').onclick=openCheckin;
+  } else if(S.days[t] && S.days[t].status==='slip'){
+    slot.innerHTML = `<div class="statuschip slip"><span class="ci">↺</span><span>Slip logged for today. Tomorrow is Day 1 of the next climb — your ${totalClean()} clean days still count.</span></div>`;
+  } else if(S.days[t] && S.days[t].status==='clean'){
+    slot.innerHTML = `<div class="statuschip idle"><span class="ci">✓</span><span>Today's already banked. See you at tomorrow's check-in.</span></div>`;
+  } else {
+    const n = currentStreak();
+    slot.innerHTML = `<div class="statuschip idle"><span class="ci">☾</span><span><b>Day ${n+1} in progress.</b> Stay clean today — you'll bank it at tomorrow's check-in.</span></div>`;
+  }
 }
 
 /* ---------- render: real vs pixels ---------- */
@@ -755,53 +929,6 @@ function renderRvp(){
   else if(real>pix) msg.innerHTML = '<b>Real is winning.</b> This is the scoreboard that actually matters — every moment with her rewires you toward her.';
   else if(real===pix) msg.innerHTML = 'Dead even. One more real moment with her tips the balance — <b>that\'s the whole game.</b>';
   else msg.innerHTML = 'Pixels are ahead right now — but this bar resets its window every 30 days, and <b>every real moment you log pushes it back.</b> Play the long game.';
-}
-
-/* ---------- render: catch-up ---------- */
-function gapDays(){
-  const logged = Object.keys(S.days).sort();
-  if(!logged.length) return [];
-  const t = todayStr();
-  let d = addDays(logged[logged.length-1], 1);
-  const gaps = [];
-  while(d < t){ if(!S.days[d]) gaps.push(d); d = addDays(d,1); }
-  /* also catch holes between older logged days, but only within the last 14 days */
-  let d2 = addDays(t,-14);
-  while(d2 < t){ if(!S.days[d2] && d2 > logged[0] && !gaps.includes(d2)) gaps.push(d2); d2 = addDays(d2,1); }
-  gaps.sort();
-  return gaps.slice(-7); /* show at most a week; older ones via calendar */
-}
-function renderCatchup(){
-  const card = document.getElementById('catchupCard');
-  const gaps = gapDays();
-  if(!gaps.length){ card.style.display='none'; return; }
-  card.style.display='block';
-  const list = document.getElementById('catchupList');
-  const nice = ds => new Date(ds+'T12:00:00').toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'});
-  list.innerHTML = gaps.map(ds=>`<div class="cu-row">
-      <span class="d">${nice(ds)}</span>
-      <button class="cu-clean" data-ds="${ds}">Clean ✓</button>
-      <button class="cu-slip" data-ds="${ds}">Slipped</button>
-    </div>`).join('');
-  list.querySelectorAll('.cu-clean').forEach(b=>b.onclick=async()=>{
-    S.days[b.dataset.ds]={status:'clean',note:''};
-    await saveState(); renderAll();
-    toast('Backfilled ✨ Streak updated.');
-    checkMilestone();
-  });
-  list.querySelectorAll('.cu-slip').forEach(b=>b.onclick=async()=>{
-    S.days[b.dataset.ds]={status:'slip',note:''};
-    await saveState(); renderAll();
-    toast('Logged honestly. That still counts for something. 🌅');
-  });
-  const all = document.getElementById('cuAllClean');
-  all.style.display = gaps.length>1 ? 'block':'none';
-  all.onclick = async()=>{
-    gaps.forEach(ds=>{ S.days[ds]={status:'clean',note:''}; });
-    await saveState(); renderAll();
-    toast(gaps.length+' clean days backfilled ✨');
-    checkMilestone();
-  };
 }
 
 /* ---------- render: calendar ---------- */
@@ -829,38 +956,179 @@ function renderCal(){
         if(!S.days[ds]) S.days[ds]={status:'clean',note:''};
         else if(S.days[ds].status==='clean') S.days[ds].status='slip';
         else delete S.days[ds];
-        await saveState(); renderAll();
+        await saveState(); renderAll(); checkMilestone();
       };
     }
     grid.appendChild(e);
   }
 }
 
-/* ---------- render: milestones ---------- */
-function renderMilestones(){
-  const best = bestStreak();
-  const el = document.getElementById('msList');
-  el.innerHTML = MILESTONES.map(m=>{
-    const won = best>=m.d;
-    return `<div class="mstone ${won?'won':''}">
-      <div class="badge">${m.e}</div>
-      <div><div class="t">${m.n}</div><div class="d">${m.desc}</div></div>
-      <div class="days">${won?'✓':'Day '+m.d}</div>
+/* ---------- render: milestones (the climb) ---------- */
+function renderMilestonesPage(){
+  const best=bestStreak(), cur=currentStreak(), total=totalClean();
+  document.getElementById('msBest').textContent = best;
+  document.getElementById('msTotal').textContent = total;
+  document.getElementById('msStars').textContent = wonCount()+'/'+MILESTONES.length;
+
+  /* next-star card */
+  const nm=nextMilestone();
+  const pb=priorBest();
+  const isRecord = cur>0 && cur>pb;
+  const slot=document.getElementById('nextStarSlot');
+  if(nm){
+    const lo=prevMilestoneDay(), seg=nm.d-lo, prog=seg>0?Math.round(100*(cur-lo)/seg):0, togo=nm.d-cur;
+    let msg;
+    if(togo<=2) msg='You are <b>so close</b> — hold the line and it\'s yours.';
+    else if(prog>=50) msg='Over halfway to the next star. Momentum is on your side.';
+    else msg='One clean day at a time. The next star gets closer every check-in.';
+    slot.innerHTML = `<div class="nextstar">
+      <div class="top">
+        <div class="em">${nm.e}</div>
+        <div><div class="lab">Next star</div><div class="nm">${nm.n}</div></div>
+        <div class="togo"><div class="n">${togo}</div><div class="u">day${togo===1?'':'s'} to go</div></div>
+      </div>
+      <div class="segbar"><i style="width:${Math.max(3,prog)}%"></i></div>
+      <div class="msg">${msg}</div>
+      ${isRecord?`<div class="record-flag">🏔️ <span><b>New territory.</b> You've never climbed this high — your previous best was ${pb} day${pb===1?'':'s'}.</span></div>`:''}
     </div>`;
-  }).join('');
+  } else {
+    slot.innerHTML = `<div class="nextstar"><div class="top"><div class="em">☀️</div>
+      <div><div class="lab">The whole sky</div><div class="nm">Every star placed</div></div>
+      <div class="togo"><div class="n">${cur}</div><div class="u">days</div></div></div>
+      <div class="msg">You've climbed the entire constellation. This isn't the finish — it's the view. Keep going.</div></div>`;
+  }
+
+  /* the climb — rows size to their text; trail geometry is measured from real dot positions */
+  const M=MILESTONES.length;
+  let html=`<div class="climb-track"></div><div class="climb-fill" style="height:0px"></div>`;
+  for(let p=0;p<=M;p++){
+    const L=M-p;
+    if(L===0){
+      html+=`<div class="climb-node" data-day="0">
+        <span class="node-star base">·</span>
+        <div class="node-info"><div class="node-name" style="color:var(--ink-dim)">Start</div>
+        <div class="node-sub">Day 0 — where every climb begins</div></div></div>`;
+      continue;
+    }
+    const m=MILESTONES[L-1];
+    const tier=milestoneTier(m);
+    const isNext=nm && nm.d===m.d;
+    const isAnchor=m.d===ANCHOR_DAY;
+    const won=tier==='earned';
+    /* the immediate next star and the anchor are always at least named */
+    const named = won || tier==='inview' || tier==='emerging' || isNext || isAnchor;
+    const fullVision = won || tier==='inview';
+
+    let glyph, starCls, nameLine, subLine, descLine;
+    if(won){
+      const earn=milestoneEarnDate(m.d);
+      glyph=m.e; starCls='won';
+      nameLine=`${m.n} <span class="node-check">✓</span>`;
+      subLine=earn?`Earned ${niceShort(earn)} · ${daysAgo(earn)}`:'Earned';
+      descLine=`<div class="node-desc">${m.desc}</div>`;
+    } else if(isNext){
+      glyph=m.e; starCls='next';
+      nameLine=m.n; subLine=`Day ${m.d}`;
+      descLine = fullVision ? `<div class="node-desc">${m.desc}</div>`
+                            : `<div class="node-desc veil">Climb closer to see who you become here.</div>`;
+    } else if(tier==='inview'){
+      glyph=m.e; starCls='inview';
+      nameLine=m.n; subLine=`Day ${m.d}`;
+      descLine=`<div class="node-desc">${m.desc}</div>`;
+    } else if(named){                       /* emerging, or the anchor while still distant */
+      glyph=m.e; starCls='emerging';
+      nameLine=m.n; subLine=`Day ${m.d}`;
+      descLine=`<div class="node-desc veil">Climb closer to see who you become here.</div>`;
+    } else if(tier==='distant'){
+      glyph='✦'; starCls='veiled';
+      nameLine=`Day ${m.d}`; subLine='';
+      descLine=`<div class="node-desc veil">A star waits here.</div>`;
+    } else {                                /* sealed */
+      glyph='✦'; starCls='sealed';
+      nameLine='Sealed'; subLine='';
+      descLine=`<div class="node-desc veil">Hidden in the dark — keep climbing.</div>`;
+    }
+    html+=`<div class="climb-node ${won?'won':''} tier-${tier}" data-day="${m.d}">
+      <span class="node-star ${starCls}">${glyph}</span>
+      <div class="node-info">
+        <div class="node-name">${nameLine}</div>
+        ${subLine?`<div class="node-sub">${subLine}</div>`:''}
+        ${descLine}
+      </div></div>`;
+  }
+  const climb=document.getElementById('climb');
+  climb.style.height='';
+  climb.innerHTML=html;
+
+  /* measure each star dot's real centre (from the bottom) and interpolate the "you" position */
+  const Hc=climb.offsetHeight;
+  const climbTop=climb.getBoundingClientRect().top;
+  const centres=[];
+  climb.querySelectorAll('.climb-node[data-day]').forEach(node=>{
+    const star=node.querySelector('.node-star');
+    const sr=star.getBoundingClientRect();
+    centres.push({day:+node.dataset.day, c:Hc-((sr.top+sr.height/2)-climbTop)});
+  });
+  centres.sort((a,b)=>a.day-b.day);
+  const interp=(day)=>{
+    if(!centres.length) return 0;
+    if(day<=centres[0].day) return centres[0].c;
+    for(let i=0;i<centres.length-1;i++){
+      const lo=centres[i], hi=centres[i+1];
+      if(day>=lo.day && day<=hi.day){
+        const f=hi.day===lo.day?0:(day-lo.day)/(hi.day-lo.day);
+        return lo.c+(hi.c-lo.c)*f;
+      }
+    }
+    return centres[centres.length-1].c;
+  };
+  const youC=interp(cur);
+  if(isRecord && pb>0){
+    const r=document.createElement('div'); r.className='climb-record';
+    r.style.bottom=interp(pb)+'px';
+    r.innerHTML=`<span>past best · ${pb}</span>`;
+    climb.appendChild(r);
+  }
+  if(cur>0){
+    const y=document.createElement('div'); y.className='climb-you';
+    y.style.bottom=youC+'px';
+    y.innerHTML=`<span class="dot"></span><span class="tag">You · Day ${cur}</span>`;
+    climb.appendChild(y);
+  }
+  const fill=climb.querySelector('.climb-fill');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce){ fill.style.height=youC+'px'; }
+  else { requestAnimationFrame(()=>requestAnimationFrame(()=>{ fill.style.height=youC+'px'; })); }
 }
+
+/* ---------- milestone celebration ---------- */
 function checkMilestone(){
   const s=currentStreak();
-  /* find every milestone now reached but never celebrated (backfills can jump past several) */
   const due = MILESTONES.filter(m=>m.d<=s && !S.celebrated.includes(m.d));
   if(!due.length) return;
   due.forEach(m=>S.celebrated.push(m.d));
   saveState();
-  const hit = due[due.length-1]; /* celebrate the biggest one */
+  const hit = due[due.length-1];
   document.getElementById('msEmoji').textContent=hit.e;
   document.getElementById('msName').textContent=hit.n;
   document.getElementById('msDesc').textContent='Day '+hit.d+' — '+hit.desc;
+  spawnBurst();
+  buzz([0,40,60,40,60,40]);
   document.getElementById('msOverlay').classList.add('open');
+}
+function spawnBurst(){
+  const b=document.getElementById('msBurst'); if(!b) return;
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  b.innerHTML='';
+  for(let i=0;i<22;i++){
+    const s=document.createElement('i');
+    const ang=Math.random()*6.28, dist=60+Math.random()*120;
+    s.style.setProperty('--bx',(Math.cos(ang)*dist).toFixed(0)+'px');
+    s.style.setProperty('--by',(Math.sin(ang)*dist+40).toFixed(0)+'px');
+    s.style.background = Math.random()>.5?'var(--star)':'var(--aurora)';
+    s.style.animationDelay=(Math.random()*.2)+'s';
+    b.appendChild(s);
+  }
 }
 
 /* ---------- render: urge & slip log ---------- */
@@ -870,12 +1138,13 @@ function renderUrges(){
   el.innerHTML = S.urges.slice().reverse().slice(0,15).map(u=>{
     const d=new Date(u.ts);
     const when = d.toLocaleDateString(undefined,{month:'short',day:'numeric'})+' '+d.toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'});
-    const extra = u.outcome==='slipped'
-      ? [u.duration, u.orgasms].filter(Boolean).join(' · ')
-      : '';
+    const extra = u.outcome==='slipped' ? [u.duration, u.orgasms].filter(Boolean).join(' · ') : '';
     return `<div class="urgeitem">
-      <span class="${u.outcome==='resisted'?'w':'l'}">${u.outcome==='resisted'?'🏆 Beat it':'↺ Slipped'}</span>
-      <span class="meta">${'●'.repeat(u.intensity||0)}${'○'.repeat(Math.max(0,5-(u.intensity||0)))} · ${u.trigger||'—'}${extra?'<br>'+extra:''}<br>${when}</span>
+      <div class="r1">
+        <span class="${u.outcome==='resisted'?'w':'l'}">${u.outcome==='resisted'?'🏆 Beat it':'↺ Slipped'}</span>
+        <span class="meta">${'●'.repeat(u.intensity||0)}${'○'.repeat(Math.max(0,5-(u.intensity||0)))} · ${u.trigger||'—'}${extra?'<br>'+extra:''}<br>${when}</span>
+      </div>
+      ${u.note?'<div class="lesson">'+escapeHtml(u.note)+'</div>':''}
     </div>`;
   }).join('');
 }
@@ -890,18 +1159,16 @@ function renderReasons(){
 }
 function escapeHtml(s){ return (s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
-/* ---------- render: recovery (chart + list + stats) ---------- */
+/* ---------- render: recovery ---------- */
 function renderRecovery(){
   let arr = sortedIntimacy();
-  /* stats */
-  const last = arr[arr.length-1];
-  document.getElementById('rvStrength').textContent = last? last.strength+'/5' : '–';
-  document.getElementById('rvConf').textContent = last? last.confidence+'/5' : '–';
+  const a=avgLast5('strength'), c=avgLast5('confidence');
+  document.getElementById('rvAvgStr').textContent = a===null?'–':(Math.round(a*10)/10)+'/5';
+  document.getElementById('rvAvgConf').textContent = c===null?'–':(Math.round(c*10)/10)+'/5';
   document.getElementById('rvSex').textContent = arr.filter(x=>x.type && x.type.startsWith('Sex') && !x.type.includes('stopped')).length;
   const l5 = arr.slice(-5);
   document.getElementById('rvPied').textContent = l5.length? Math.round(100*l5.filter(x=>x.pied).length/l5.length)+'%' : '–';
 
-  /* list */
   const list = document.getElementById('intList');
   if(!arr.length){ list.innerHTML='<div class="mini-note">Nothing logged yet.</div>'; }
   else{
@@ -921,12 +1188,12 @@ function renderRecovery(){
     });
   }
 
-  /* chart (last 20 entries so it stays readable) */
+  /* chart (last 20 entries) */
   const box = document.getElementById('chartBox');
   const full = arr.length;
   arr = arr.slice(-20);
   if(arr.length<2){
-    box.innerHTML = '<div class="mini-note" style="text-align:center;padding:20px 10px;margin:0">Log two or more intimacy entries and your strength & confidence trend lines appear here — that\'s the graph you\'ll watch climb over the reboot. 📈</div>';
+    box.innerHTML = '<div class="mini-note" style="text-align:center;padding:20px 10px;margin:0">Log two or more intimacy entries and your strength & confidence trend lines appear here — the graph you\'ll watch climb over the reboot. 📈</div>';
     return;
   }
   const W=320,H=150,padL=24,padR=10,padT=12,padB=24;
@@ -961,7 +1228,6 @@ function renderRecovery(){
 /* ---------- SOS ---------- */
 let urgeSel = {intensity:null, trigger:null};
 let breathTimer=null, breathOn=false;
-
 function openSOS(){
   urgeSel={intensity:null,trigger:null};
   document.querySelectorAll('#urgeIntensity button,#urgeTriggers .chip').forEach(x=>x.classList.remove('sel'));
@@ -1083,21 +1349,18 @@ document.addEventListener('DOMContentLoaded',()=>{
     document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
     document.getElementById(b.dataset.scr).classList.add('active');
     window.scrollTo({top:0});
+    if(b.dataset.scr==='scr-milestones') renderMilestonesPage();
   });
   document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>{
     document.getElementById(b.dataset.close).classList.remove('open');
     stopBreath();
   });
 
-  /* note */
-  document.getElementById('saveNoteBtn').onclick = async (e)=>{
-    const t = todayStr();
-    const v = document.getElementById('dayNote').value.trim();
-    if(S.days[t]) S.days[t].note = v; else S.noteDraft = v;
-    await saveState();
-    e.target.textContent='Saved ✓'; e.target.classList.add('saved');
-    setTimeout(()=>{e.target.textContent='Save note';e.target.classList.remove('saved');},1600);
-  };
+  /* slip-today link */
+  document.getElementById('slipTodayLink').onclick=()=>openSlip();
+
+  /* check-in dismiss */
+  document.getElementById('ciLater').onclick=closeCheckin;
 
   /* calendar */
   document.getElementById('calPrev').onclick=()=>{calCursor.setMonth(calCursor.getMonth()-1);renderCal();};
@@ -1123,7 +1386,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   });
   document.getElementById('urgeWon').onclick=async()=>{
     S.urges.push({ts:localISO(new Date()), intensity:urgeSel.intensity||3, trigger:urgeSel.trigger||'', outcome:'resisted'});
-    await saveState(); stopBreath();
+    buzz(15); await saveState(); stopBreath();
     document.getElementById('sosOverlay').classList.remove('open');
     renderAll();
     toast('🏆 Urge beaten. That\'s a rep for the new wiring.');
@@ -1153,8 +1416,8 @@ document.addEventListener('DOMContentLoaded',()=>{
     const t=todayStr();
     const lesson=document.getElementById('slipLesson').value.trim();
     S.days[t]={status:'slip', note:lesson? 'Lesson: '+lesson : (S.days[t]?.note||''), duration:slipDurV||'', orgasms:slipOV||''};
-    S.urges.push({ts:localISO(new Date()), intensity:(slipCtx?.intensity)||3, trigger:slipTrig||(slipCtx?.trigger)||'', outcome:'slipped', duration:slipDurV||'', orgasms:slipOV||''});
-    await saveState();
+    S.urges.push({ts:localISO(new Date()), intensity:(slipCtx?.intensity)||3, trigger:slipTrig||(slipCtx?.trigger)||'', outcome:'slipped', duration:slipDurV||'', orgasms:slipOV||'', note:lesson||''});
+    buzz(20); await saveState();
     document.getElementById('slipOverlay').classList.remove('open');
     renderAll();
     toast('Logged. Tomorrow is Day 1 of the comeback. 🌅');
@@ -1165,7 +1428,6 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.querySelectorAll('#intType .chip').forEach(b=>b.onclick=()=>{
     document.querySelectorAll('#intType .chip').forEach(x=>x.classList.remove('sel'));
     b.classList.add('sel'); intSel.type=b.textContent;
-    /* smart defaults for PIED toggle */
     const piedLikely = b.textContent.includes('PIED');
     document.querySelectorAll('#intPied .chip').forEach(x=>{
       x.classList.toggle('sel', (x.dataset.v==='yes')===piedLikely);
@@ -1203,7 +1465,7 @@ document.addEventListener('DOMContentLoaded',()=>{
       pied: !!intSel.pied,
       note: document.getElementById('intNote').value.trim()
     });
-    await saveState();
+    buzz(12); await saveState();
     document.getElementById('intOverlay').classList.remove('open');
     renderAll();
     toast(intSel.pied
@@ -1222,7 +1484,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     if(!confirm('Forgot passcode? The only way back in is erasing ALL data. Erase everything?')) return;
     if(!confirm('Really erase every record? This cannot be undone.')) return;
     try{ localStorage.removeItem(KEY); }catch(e){}
-    S = JSON.parse(JSON.stringify(SEED)); S.pinAsked=true;
+    S = JSON.parse(JSON.stringify(SEED)); S.pinAsked=true; S.startDate=todayStr();
     await saveState(); lockHide(); renderAllTracked();
     toast('Fresh sky. Day 0 starts now.');
   };
@@ -1249,7 +1511,9 @@ document.addEventListener('DOMContentLoaded',()=>{
         if(!confirm('Replace everything in the app with this backup?')) return;
         S=data;
         if(!S.intimacy) S.intimacy=[];
+        if(!S.celebrated) S.celebrated=[];
         if(S.pin===undefined) S.pin=null;
+        if(!S.startDate){ const lg=Object.keys(S.days||{}).sort(); S.startDate = lg.length?lg[0]:todayStr(); }
         await saveState(); renderAllTracked();
         toast('Backup restored ✨');
       }catch(e){ toast('⚠️ That file isn\'t a valid Northstar backup'); }
@@ -1262,7 +1526,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('resetAll').onclick=async()=>{
     if(!confirm('Erase ALL data? This cannot be undone.')) return;
     try{ localStorage.removeItem(KEY); }catch(e){}
-    S = {days:{},urges:[],intimacy:[],reasons:DEFAULT_REASONS.slice(),celebrated:[],noteDraft:''};
+    S = JSON.parse(JSON.stringify(SEED)); S.startDate=todayStr();
     await saveState(); renderAll();
     toast('Fresh sky. Day 0 starts now.');
   };
@@ -1271,10 +1535,12 @@ document.addEventListener('DOMContentLoaded',()=>{
 /* ---------- boot ---------- */
 function renderAll(){
   document.getElementById('datechip').textContent = new Date().toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'});
-  renderHero(); renderCheckin(); renderCatchup(); renderRvp(); renderStats(); renderNote();
-  renderCal(); renderMilestones(); renderUrges(); renderReasons(); renderRecovery();
+  renderHero(); renderRvp();
+  renderCal(); renderUrges(); renderReasons(); renderRecovery();
+  if(document.getElementById('scr-milestones').classList.contains('active')) renderMilestonesPage();
   buildStars();
 }
+
 /* ---------- PIN lock ---------- */
 let lockMode=null, pinBuf='', pinFirst='', appUnlocked=false;
 function lockDotsDraw(){
@@ -1290,7 +1556,7 @@ function lockShow(mode){
   lockDotsDraw();
   document.getElementById('lockScreen').classList.add('open');
 }
-function lockHide(){ document.getElementById('lockScreen').classList.remove('open'); appUnlocked=true; }
+function lockHide(){ document.getElementById('lockScreen').classList.remove('open'); appUnlocked=true; maybeAutoCheckin(); }
 function lockErr(msg){
   const d=document.getElementById('lockDots');
   d.classList.add('err');
@@ -1321,11 +1587,11 @@ async function lockEntry(digit){
 let lastRenderDay = null;
 function renderAllTracked(){ lastRenderDay = todayStr(); renderAll(); }
 function refreshIfNewDay(){
-  if(S && lastRenderDay && lastRenderDay !== todayStr()){ renderAllTracked(); }
+  if(S && lastRenderDay && lastRenderDay !== todayStr()){ renderAllTracked(); if(appUnlocked) maybeAutoCheckin(); }
 }
 document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) refreshIfNewDay(); });
 addEventListener('focus', refreshIfNewDay);
-setInterval(refreshIfNewDay, 60000); /* safety net: catches midnight while open */
+setInterval(refreshIfNewDay, 60000);
 
 (async function(){
   await loadState();
@@ -1333,7 +1599,7 @@ setInterval(refreshIfNewDay, 60000); /* safety net: catches midnight while open 
   requestAnimationFrame(drawSky);
   if(S.pin){ lockShow('unlock'); }
   else if(!S.pinAsked){ S.pinAsked=true; await saveState(); lockShow('set-initial'); }
-  else { appUnlocked=true; }
+  else { appUnlocked=true; maybeAutoCheckin(); }
 })();
 </script>
 </body>
